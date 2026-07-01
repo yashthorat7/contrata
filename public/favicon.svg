@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <!-- Paper gradient for basic shading depth -->
+    <linearGradient id="paperGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="60%" stop-color="#f6f6f6" />
+      <stop offset="100%" stop-color="#e2e2e2" />
+    </linearGradient>
+  </defs>
+
+  <!-- Jagged/Crumpled outer boundary with a very thin outline -->
+  <path d="M 50 5 L 62 10 L 75 8 L 82 20 L 92 28 L 90 42 L 95 55 L 88 68 L 84 82 L 72 86 L 60 92 L 48 95 L 35 90 L 22 92 L 15 80 L 8 68 L 10 52 L 5 38 L 12 24 L 25 18 L 38 10 Z" 
+        fill="url(#paperGradient)" stroke="#888888" stroke-width="1.5" stroke-linejoin="miter"/>
+
+  <!-- Shading facets to represent crumpled folds -->
+  <polygon points="42,35 55,30 60,52" fill="#000000" fill-opacity="0.04" />
+  <polygon points="60,52 80,58 70,38" fill="#000000" fill-opacity="0.07" />
+  <polygon points="40,58 32,75 50,82" fill="#000000" fill-opacity="0.05" />
+  <polygon points="68,76 84,82 80,58" fill="#000000" fill-opacity="0.08" />
+  <polygon points="25,18 20,45 40,58" fill="#000000" fill-opacity="0.03" />
+
+  <!-- Crumpled paper internal creases (thin lines) -->
+  <path d="M 38 10 L 42 35 L 25 18" fill="none" stroke="#888888" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M 62 10 L 55 30 L 75 8" fill="none" stroke="#888888" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M 42 35 L 55 30 L 60 52 L 40 58 L 42 35" fill="none" stroke="#888888" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M 25 18 L 20 45 L 40 58" fill="none" stroke="#888888" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M 82 20 L 70 38 L 92 28" fill="none" stroke="#888888" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M 70 38 L 60 52 L 80 58 L 90 42" fill="none" stroke="#888888" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M 40 58 L 32 75 L 50 82 L 60 52" fill="none" stroke="#888888" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M 32 75 L 15 80" fill="none" stroke="#888888" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M 50 82 L 48 95" fill="none" stroke="#888888" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M 60 92 L 68 76 L 84 82" fill="none" stroke="#888888" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M 68 76 L 80 58" fill="none" stroke="#888888" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M 20 45 L 10 52" fill="none" stroke="#888888" stroke-width="1" stroke-linejoin="round"/>
+  <path d="M 20 45 L 32 75" fill="none" stroke="#888888" stroke-width="1" stroke-linejoin="round"/>
+</svg>
