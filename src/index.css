@@ -3,4 +3,32 @@
 
 @theme {
   --font-sans: 'Manrope', 'Inter', 'Roboto', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+  --font-serif: 'Inria Serif', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+}
+
+@layer utilities {
+  .bg-paper {
+    background-color: #ffffff;
+    position: relative;
+    z-index: 0;
+  }
+
+  .bg-paper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: url('http://www.transparenttextures.com/patterns/paper-2.png');
+    background-repeat: repeat;
+    opacity: 0.3;
+  }
+}
+
+::selection {
+  background-color: #d4d4d4;
+}
+
+::-moz-selection {
+  background-color: #d4d4d4;
 }
