@@ -12,6 +12,7 @@ import { EditableCell } from '../components/ui/EditableCell';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '../components/ui/Table';
 import { Sparkles, Trash } from '../components/ui/Icons';
 import { Tooltip } from '../components/ui/Tooltip';
+import { Tabs } from '../components/ui/Tabs';
 
 export default function Styling() {
   const [isChecked, setIsChecked] = useState(true);
@@ -33,7 +34,6 @@ export default function Styling() {
       </div>
 
       <div className="grid gap-8 md:grid-cols-2" onContextMenu={handleContextMenu}>
-        {/* Buttons */}
         <section className="space-y-4">
           <h2 className="border-b border-neutral-300 pb-2 font-serif text-xl font-medium text-neutral-800">Buttons</h2>
           <div className="flex flex-wrap items-center gap-4">
@@ -52,7 +52,6 @@ export default function Styling() {
           </div>
         </section>
 
-        {/* Badges */}
         <section className="space-y-4">
           <h2 className="border-b border-neutral-300 pb-2 font-serif text-xl font-medium text-neutral-800">Badges & Dropdowns</h2>
           <div className="flex flex-wrap items-center gap-4">
@@ -69,7 +68,6 @@ export default function Styling() {
           </div>
         </section>
 
-        {/* Inputs */}
         <section className="space-y-4">
           <h2 className="border-b border-neutral-300 pb-2 font-serif text-xl font-medium text-neutral-800">Inputs & Controls</h2>
           <div className="space-y-4">
@@ -97,10 +95,20 @@ export default function Styling() {
                 placeholder="Select an option..."
               />
             </div>
+
+            <div className="pt-2">
+              <p className="mb-2 text-sm text-neutral-500">Tabs Toggle</p>
+              <Tabs
+                tabs={[
+                  { id: 'tab1', label: 'Preview' },
+                  { id: 'tab2', label: 'Code' },
+                  { id: 'tab3', label: 'Settings' }
+                ]}
+              />
+            </div>
           </div>
         </section>
 
-        {/* Editables */}
         <section className="space-y-4">
           <h2 className="border-b border-neutral-300 pb-2 font-serif text-xl font-medium text-neutral-800">Editables</h2>
           <div className="space-y-4">
@@ -124,7 +132,6 @@ export default function Styling() {
         </section>
       </div>
 
-      {/* Table & Card spanning full width */}
       <section className="space-y-4">
         <h2 className="border-b border-neutral-300 pb-2 font-serif text-xl font-medium text-neutral-800">Table</h2>
         <Table>

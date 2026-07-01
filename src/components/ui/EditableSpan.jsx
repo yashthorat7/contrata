@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
 
-export function EditableSpan({ value, onChange, placeholder, nextRef, inputRef, onKeyDown, className = '' }) {
+export function EditableSpan({ value, onChange, placeholder, nextRef, inputRef, onKeyDown, maxLength, className = '' }) {
   const prevValueRef = useRef(value);
 
   useEffect(() => {
@@ -18,6 +18,14 @@ export function EditableSpan({ value, onChange, placeholder, nextRef, inputRef, 
   };
 
   const handleKeyDown = e => {
+    // enforce maxLength
+    if (maxLength && e.currentTarget.textContent.length >= maxLength) {
+      const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter'];
+      if (!allowedKeys.includes(e.key) && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+      }
+    }
+
     if (e.key === 'Enter') {
       e.preventDefault();
       if (nextRef?.current) {

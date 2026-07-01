@@ -1,0 +1,7 @@
+[
+  { "id": "/", "label": "Home", "href": "/" },
+  { "id": "/tracker", "label": "Tracker", "href": "/tracker" },
+  { "id": "/resume", "label": "Resume", "href": "/resume" },
+  { "id": "/outreach", "label": "Outreach", "href": "/outreach" },
+  { "id": "/settings", "label": "Settings", "href": "/settings" }
+]

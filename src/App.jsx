@@ -10,9 +10,9 @@ import { Navbar } from './components/Navbar';
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="bg-paper flex min-h-screen flex-col">
+      <div className="bg-paper flex h-screen flex-col overflow-hidden">
         <Navbar />
-        <main className="mx-auto w-full max-w-4xl flex-1 pt-16">
+        <main className="mx-auto w-full max-w-4xl flex-1 overflow-y-auto">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/styling" element={<Styling />} />
