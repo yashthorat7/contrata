@@ -26,7 +26,7 @@ export default function PreferencesStep({ activeTab }) {
   return (
     <div>
       {activeTab === 'search' ? (
-        <div className="flex h-[160px] flex-col justify-center font-sans text-sm leading-loose text-neutral-700 select-none">
+        <div className="flex min-h-[160px] flex-col justify-center py-4 font-sans text-sm leading-loose text-neutral-700 select-none">
           <div>
             I am looking for an{' '}
             <EditableSpan

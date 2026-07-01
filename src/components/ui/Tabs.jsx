@@ -9,19 +9,26 @@ export function Tabs({ tabs = [], activeId, defaultTab, onChange, variant = 'seg
   const navRef = useRef(null);
 
   useEffect(() => {
-    if (navRef.current) {
-      const activeEl = navRef.current.querySelector('[data-active="true"]');
-      if (activeEl) {
-        setStyle({
-          left: activeEl.offsetLeft,
-          width: activeEl.offsetWidth,
-          opacity: 1
-        });
-        return;
+    const updateStyle = () => {
+      if (navRef.current) {
+        const activeEl = navRef.current.querySelector('[data-active="true"]');
+        if (activeEl) {
+          setStyle({
+            left: activeEl.offsetLeft,
+            width: activeEl.offsetWidth,
+            opacity: 1
+          });
+          return;
+        }
       }
-    }
-    setStyle(prev => ({ ...prev, opacity: 0 }));
-  }, [currentActive, tabs, navRef]);
+      setStyle(prev => ({ ...prev, opacity: 0 }));
+    };
+
+    updateStyle();
+
+    window.addEventListener('resize', updateStyle);
+    return () => window.removeEventListener('resize', updateStyle);
+  }, [currentActive, tabs]);
 
   const handleTabClick = tabId => {
     if (activeId === undefined) setInternalActive(tabId);
@@ -52,11 +59,16 @@ export function Tabs({ tabs = [], activeId, defaultTab, onChange, variant = 'seg
 
       {tabs.map((tab, index) => {
         const isActive = currentActive === tab.id;
-        const content = tab.label;
+        const content = (
+          <div className="flex items-center justify-center gap-1.5">
+            {tab.icon && <tab.icon className="block h-[18px] w-[18px] sm:hidden" />}
+            <span className={tab.icon ? 'hidden sm:block' : 'block'}>{tab.label}</span>
+          </div>
+        );
 
         const baseItemClass = `relative z-10 font-medium whitespace-nowrap transition-colors duration-200 select-none ${
           isActive ? 'text-neutral-900' : 'cursor-pointer text-neutral-500 hover:text-neutral-900'
-        } ${isSegmented ? 'px-3 py-1 text-sm' : 'px-4 py-1.5 text-sm'}`;
+        } ${isSegmented ? 'px-3 py-1 text-sm' : 'px-3 sm:px-4 py-2 sm:py-1.5 text-sm'}`;
 
         if (tab.href) {
           return (

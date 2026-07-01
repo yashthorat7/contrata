@@ -20,8 +20,19 @@ import {
   GlobeAltIcon,
   SparklesIcon,
   ArrowPathIcon,
-  PrinterIcon
+  PrinterIcon,
+  HomeIcon,
+  ChartBarIcon,
+  DocumentIcon,
+  EnvelopeIcon,
+  Cog8ToothIcon
 } from '@heroicons/react/24/outline';
+
+export const NavHome = HomeIcon;
+export const NavTracker = ChartBarIcon;
+export const NavResume = DocumentIcon;
+export const NavOutreach = EnvelopeIcon;
+export const NavSettings = Cog8ToothIcon;
 
 export const Grip = props => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" {...props}>
