@@ -1,0 +1,27 @@
+{
+  "id": "Unique string identifier for the job entry",
+  "company": "Full name of the company",
+  "role": "Official job title / role",
+  "location": "City and state/region",
+  "locationType": "Remote, Hybrid, or Onsite",
+  "salary": "Salary amount or range (e.g., ₹20,00,000)",
+  "status": "Current status (e.g., Not Started, Applied, Technical Interview)",
+  "priority": "High, Medium, or Low (accoring to match)",
+  "platform": "Name of the platform (e.g., LinkedIn, Indeed, Direct)",
+  "dateScraped": "ISO string of when the job was scraped",
+  "datePosted": "ISO string of when the job was originally posted",
+  "notes": "A concise 1-2 sentence overview or user note",
+  "postingLink": "URL to directly view the original job posting",
+  "applyLink": "URL to directly apply for the job",
+  "saved": "Boolean indicating if bookmarked",
+  "archived": "Boolean indicating if archived",
+  "matchScore": "Integer match percentage (0-100)",
+  "unmatchedThings": "show unmatche dhtigngs about he role (Array)",
+  "tags": ["Array of 3-4 core technical skills/keywords"],
+  "recruiter": {
+    "name": "Recruiter name or null",
+    "email": "Recruiter email or null",
+    "linkedin": "Recruiter LinkedIn URL or null"
+  },
+  "description": "Full detailed job description (long-form text or markdown)"
+}

@@ -6,6 +6,7 @@ import { useOutsideClick } from '../../hooks/useOutsideClick';
 export function ContextMenu({ visible, x, y, items, onClose }) {
   const menuRef = useRef(null);
   const [coords, setCoords] = useState({ left: x, top: y });
+  const [confirmingLabel, setConfirmingLabel] = useState(null);
 
   useLayoutEffect(() => {
     if (!visible || !menuRef.current) return;
@@ -17,12 +18,26 @@ export function ContextMenu({ visible, x, y, items, onClose }) {
     setCoords({ left, top });
   }, [visible, x, y]);
 
-  useOutsideClick([menuRef], () => onClose?.(), visible, 'mousedown');
+  useOutsideClick(
+    [menuRef],
+    () => {
+      onClose?.();
+      setConfirmingLabel(null);
+    },
+    visible,
+    'mousedown'
+  );
 
   useEffect(() => {
-    if (!visible) return;
+    if (!visible) {
+      setConfirmingLabel(null);
+      return;
+    }
     const handleEscape = e => {
-      if (e.key === 'Escape') onClose?.();
+      if (e.key === 'Escape') {
+        onClose?.();
+        setConfirmingLabel(null);
+      }
     };
     document.addEventListener('keydown', handleEscape);
     return () => {
@@ -39,6 +54,7 @@ export function ContextMenu({ visible, x, y, items, onClose }) {
       onBlur={e => {
         if (!menuRef.current?.contains(e.relatedTarget)) {
           onClose?.();
+          setConfirmingLabel(null);
         }
       }}
       tabIndex={-1}
@@ -48,11 +64,17 @@ export function ContextMenu({ visible, x, y, items, onClose }) {
           key={item.label}
           type="button"
           onClick={e => {
-            item.onClick(e);
-            onClose?.();
+            if (item.confirm && confirmingLabel !== item.label) {
+              e.stopPropagation();
+              setConfirmingLabel(item.label);
+            } else {
+              item.onClick(e);
+              onClose?.();
+              setConfirmingLabel(null);
+            }
           }}
           className="flex w-full cursor-pointer items-center border-0 bg-transparent px-2 py-1.5 text-left text-neutral-700 transition duration-100 outline-none hover:bg-neutral-50">
-          <span>{item.label}</span>
+          <span>{confirmingLabel === item.label ? 'Are you sure?' : item.label}</span>
         </button>
       ))}
     </div>,

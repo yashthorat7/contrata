@@ -10,7 +10,7 @@ export const trackerColumns = [
   { key: 'status', label: 'Status', width: 120, type: 'status', placeholder: 'Status' },
   { key: 'priority', label: 'Priority', width: 85, type: 'priority', placeholder: 'Priority' },
   { key: 'platform', label: 'Platform', width: 105, type: 'platform', placeholder: 'Platform' },
-  { key: 'date', label: 'Date', width: 90, type: 'date', placeholder: 'Today' },
+  { key: 'datePosted', label: 'Date', width: 90, type: 'date', placeholder: 'Today' },
   { key: 'notes', label: 'Notes', width: 200, type: 'textarea', placeholder: 'Add notes' },
-  { key: 'link', label: 'Link', width: 45, type: 'link', placeholder: 'Add Link' }
+  { key: '_details', label: 'More', width: 50, type: 'details' }
 ];

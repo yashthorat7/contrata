@@ -31,6 +31,34 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  @keyframes slide-in-right {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes slide-tags {
+    0%,
+    10% {
+      transform: translateX(0);
+    }
+    90%,
+    100% {
+      transform: translateX(min(0px, calc(100cqw - 100%)));
+    }
+  }
+
+  .slide-tags-content {
+    animation: slide-tags 5s ease-in-out infinite alternate;
+  }
 }
 
 ::selection {

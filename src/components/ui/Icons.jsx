@@ -27,7 +27,8 @@ import {
   ChartBarIcon,
   DocumentIcon,
   EnvelopeIcon,
-  Cog8ToothIcon
+  Cog8ToothIcon,
+  FunnelIcon
 } from '@heroicons/react/24/outline';
 
 export const NavHome = HomeIcon;
@@ -64,3 +65,4 @@ export const Globe = GlobeAltIcon;
 export const Sparkles = SparklesIcon;
 export const Reset = ArrowPathIcon;
 export const Printer = PrinterIcon;
+export const Filter = FunnelIcon;

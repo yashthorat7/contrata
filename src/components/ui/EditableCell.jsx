@@ -3,7 +3,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Edit, ExternalLink } from './Icons';
 import { DatePicker } from './DatePicker';
 
-export function EditableCell({ value, onSave, type = 'text', placeholder = '', editLinksMode = false, className = '' }) {
+export function EditableCell({
+  value,
+  onSave,
+  type = 'text',
+  placeholder = '',
+  editLinksMode = false,
+  className = '',
+  dateRelative = false
+}) {
   const [isFocused, setIsFocused] = useState(false);
   const [localVal, setLocalVal] = useState(value || '');
   const inputRef = useRef(null);
@@ -71,6 +79,7 @@ export function EditableCell({ value, onSave, type = 'text', placeholder = '', e
     return (
       <DatePicker
         value={localVal}
+        relative={dateRelative}
         onChange={val => {
           setLocalVal(val);
           onSave(val);

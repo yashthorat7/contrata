@@ -16,6 +16,10 @@ export default function useTrackerEngine() {
     setJobs(prev => prev.map(j => (j.id === id ? { ...j, ...updates } : j)));
   };
 
+  const updateJobsBulk = (ids, updates) => {
+    setJobs(prev => prev.map(j => (ids.includes(j.id) ? { ...j, ...updates } : j)));
+  };
+
   const moveJob = (fromIdx, toIdx) => {
     const newJobs = [...jobs];
     const [moved] = newJobs.splice(fromIdx, 1);
@@ -28,7 +32,7 @@ export default function useTrackerEngine() {
   };
 
   const filteredJobs = useMemo(() => {
-    return jobs.filter(job => {
+    return (jobs || []).filter(job => {
       const matchSearch =
         (job.company || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
         (job.role || '').toLowerCase().includes(searchQuery.toLowerCase());
@@ -42,6 +46,7 @@ export default function useTrackerEngine() {
     jobs,
     addJob,
     updateJob,
+    updateJobsBulk,
     moveJob,
     deleteJobsBulk,
     searchQuery,
