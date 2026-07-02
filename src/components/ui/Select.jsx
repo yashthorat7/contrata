@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
+import { useOutsideClick } from '../../hooks/useOutsideClick';
 
 export function Select({ options = [], value, onChange, placeholder = 'Select an option', className = '' }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,15 +8,7 @@ export function Select({ options = [], value, onChange, placeholder = 'Select an
 
   const selectedOption = options.find(opt => opt.value === value);
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (containerRef.current && !containerRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  useOutsideClick([containerRef], () => setIsOpen(false), isOpen);
 
   return (
     <div className={`relative ${className}`} ref={containerRef}>

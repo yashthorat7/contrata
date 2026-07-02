@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { useOutsideClick } from '../../hooks/useOutsideClick';
 
 export function Dropdown({ trigger, children, align = 'left', className = '' }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,20 +38,15 @@ export function Dropdown({ trigger, children, align = 'left', className = '' }) 
     };
   }, [isOpen, align]);
 
+  useOutsideClick([menuRef, triggerRef], () => setIsOpen(false), isOpen, 'click');
+
   useEffect(() => {
     if (!isOpen) return;
-    const handleOutsideClick = e => {
-      if (menuRef.current && !menuRef.current.contains(e.target) && triggerRef.current && !triggerRef.current.contains(e.target)) {
-        setIsOpen(false);
-      }
-    };
     const handleKeyDown = e => {
       if (e.key === 'Escape') setIsOpen(false);
     };
-    document.addEventListener('click', handleOutsideClick);
     document.addEventListener('keydown', handleKeyDown);
     return () => {
-      document.removeEventListener('click', handleOutsideClick);
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen]);

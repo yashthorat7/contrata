@@ -15,7 +15,7 @@ export function DatePicker({ value, onChange, placeholder = 'Select date', class
       className={className}
       trigger={
         <button type="button" className={triggerClassName || defaultTrigger}>
-          <span className="truncate">{displayValue}</span>
+          <span className="whitespace-nowrap">{displayValue}</span>
         </button>
       }>
       {({ close }) => (

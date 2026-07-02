@@ -8,12 +8,12 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '.
 
 export default function TrackerTable({ updateJob, filteredJobs }) {
   return (
-    <div className="relative flex flex-1 flex-col gap-2">
+    <div className="relative flex min-h-0 min-w-0 flex-1 flex-col gap-2">
       <Table className="min-w-max">
         <TableHeader>
           <TableRow>
             {columns.map(col => (
-              <TableHead key={col.key} style={{ width: col.width }} className="font-medium whitespace-nowrap">
+              <TableHead key={col.key} style={{ width: col.width, minWidth: col.width }} className="font-medium whitespace-nowrap">
                 {col.label}
               </TableHead>
             ))}
@@ -23,7 +23,7 @@ export default function TrackerTable({ updateJob, filteredJobs }) {
           {filteredJobs.map(job => (
             <TableRow key={job.id} className="bg-transparent hover:bg-neutral-50">
               {columns.map(col => (
-                <TableCell key={col.key} className="truncate">
+                <TableCell key={col.key} className={col.key === 'notes' ? 'max-w-[300px] min-w-[200px] truncate' : 'whitespace-nowrap'}>
                   {['status', 'priority', 'platform'].includes(col.type) ? (
                     <BadgeDropdown
                       current={job[col.key]}

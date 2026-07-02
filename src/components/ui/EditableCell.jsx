@@ -29,15 +29,11 @@ export function EditableCell({ value, onSave, type = 'text', placeholder = '', e
 
   if (!isFocused && type !== 'link' && type !== 'date') {
     return (
-      <input
-        type="text"
-        readOnly
-        value={localVal}
-        onFocus={() => setIsFocused(true)}
-        placeholder={placeholder || '...'}
-        spellCheck={false}
-        className={`w-full cursor-text truncate bg-transparent px-0 py-0 text-sm text-neutral-900 outline-none ${className}`}
-      />
+      <div
+        onClick={() => setIsFocused(true)}
+        className={`cursor-text ${type === 'textarea' ? 'w-full truncate' : 'whitespace-nowrap'} bg-transparent px-0 py-0 text-sm outline-none ${localVal ? 'text-neutral-900' : 'text-neutral-400'} ${className}`}>
+        {localVal || placeholder || '...'}
+      </div>
     );
   }
 

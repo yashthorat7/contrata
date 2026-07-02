@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useOutsideClick } from '../../hooks/useOutsideClick';
 
 export function ContextMenu({ visible, x, y, items, onClose }) {
   const menuRef = useRef(null);
@@ -16,20 +17,15 @@ export function ContextMenu({ visible, x, y, items, onClose }) {
     setCoords({ left, top });
   }, [visible, x, y]);
 
+  useOutsideClick([menuRef], () => onClose?.(), visible, 'mousedown');
+
   useEffect(() => {
     if (!visible) return;
-    const handleOutsideClick = e => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        onClose?.();
-      }
-    };
     const handleEscape = e => {
       if (e.key === 'Escape') onClose?.();
     };
-    document.addEventListener('mousedown', handleOutsideClick);
     document.addEventListener('keydown', handleEscape);
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
       document.removeEventListener('keydown', handleEscape);
     };
   }, [visible, onClose]);

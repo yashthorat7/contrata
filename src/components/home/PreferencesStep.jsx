@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { EditableSpan } from '../ui/EditableSpan';
 import { Button, ConfirmButton } from '../ui/Button';
 import { SmartLinkStore } from './SmartLinkStore';
-import { usePreferences } from '../../hooks/usePreferences';
+import { usePreferences } from '../../hooks/usePreferences.js';
 import { generateSearchPrompt, generateLinksPrompt } from '../../utils/prompts';
 import { storage } from '../../utils/storage';
 
