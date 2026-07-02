@@ -1,7 +1,7 @@
 import React from 'react';
 
 const variantClasses = {
-  default: 'bg-neutral-100 text-neutral-800 border-neutral-300',
+  default: 'bg-neutral-50 text-neutral-900 border-neutral-300',
   outline: 'bg-transparent text-neutral-800 border-neutral-300'
 };
 

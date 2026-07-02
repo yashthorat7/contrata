@@ -4,6 +4,8 @@ import {
   TagIcon,
   MapPinIcon,
   ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
   CheckIcon,
   TrashIcon,
   BuildingOfficeIcon,
@@ -43,6 +45,8 @@ export const Search = MagnifyingGlassIcon;
 export const Tag = TagIcon;
 export const MapPin = MapPinIcon;
 export const ChevronDown = ChevronDownIcon;
+export const ChevronLeft = ChevronLeftIcon;
+export const ChevronRight = ChevronRightIcon;
 export const Check = CheckIcon;
 export const Trash = TrashIcon;
 export const Building = BuildingOfficeIcon;

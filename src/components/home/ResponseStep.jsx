@@ -1,17 +1,12 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Textarea } from '../ui/Input';
 import { Button } from '../ui/Button';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 export default function ResponseStep() {
-  const [responseText, setResponseText] = useState(() => {
-    return localStorage.getItem('hf_responseText') || '';
-  });
+  const [responseText, setResponseText] = useLocalStorage('hf_responseText', '');
   const [status, setStatus] = useState('idle'); // status enum
-
-  useEffect(() => {
-    localStorage.setItem('hf_responseText', responseText);
-  }, [responseText]);
 
   const handleImport = () => {
     if (!responseText.trim()) return;

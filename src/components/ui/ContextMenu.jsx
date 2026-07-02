@@ -40,7 +40,6 @@ export function ContextMenu({ visible, x, y, items, onClose }) {
     <div
       ref={menuRef}
       style={{ position: 'fixed', top: `${coords.top}px`, left: `${coords.left}px`, zIndex: 9999 }}
-      onClick={e => e.stopPropagation()}
       onBlur={e => {
         if (!menuRef.current?.contains(e.relatedTarget)) {
           onClose?.();

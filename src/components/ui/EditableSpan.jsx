@@ -45,6 +45,7 @@ export function EditableSpan({ value, onChange, placeholder, nextRef, inputRef, 
       ref={inputRef}
       contentEditable
       suppressContentEditableWarning
+      spellCheck={false}
       onInput={handleInput}
       onKeyDown={handleKeyDown}
       data-placeholder={placeholder}

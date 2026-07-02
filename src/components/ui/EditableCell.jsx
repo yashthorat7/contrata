@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { Badge } from './Badge';
 import { Edit, ExternalLink } from './Icons';
+import { DatePicker } from './DatePicker';
 
 export function EditableCell({ value, onSave, type = 'text', placeholder = '', editLinksMode = false, className = '' }) {
   const [isFocused, setIsFocused] = useState(false);
@@ -25,9 +25,9 @@ export function EditableCell({ value, onSave, type = 'text', placeholder = '', e
     if (e.key === 'Enter') e.target.blur();
   };
 
-  const commonClasses = `w-full bg-transparent px-2 py-1 text-sm text-neutral-900 outline-none ${className}`;
+  const commonClasses = `w-full bg-transparent px-0 py-0 text-sm text-neutral-900 outline-none ${className}`;
 
-  if (!isFocused && type !== 'link') {
+  if (!isFocused && type !== 'link' && type !== 'date') {
     return (
       <input
         type="text"
@@ -35,7 +35,8 @@ export function EditableCell({ value, onSave, type = 'text', placeholder = '', e
         value={localVal}
         onFocus={() => setIsFocused(true)}
         placeholder={placeholder || '...'}
-        className={`w-full cursor-text truncate bg-transparent px-2 py-1 text-sm text-neutral-500 outline-none ${className}`}
+        spellCheck={false}
+        className={`w-full cursor-text truncate bg-transparent px-0 py-0 text-sm text-neutral-900 outline-none ${className}`}
       />
     );
   }
@@ -51,33 +52,50 @@ export function EditableCell({ value, onSave, type = 'text', placeholder = '', e
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           placeholder={placeholder || 'Paste URL'}
+          spellCheck={false}
           className={commonClasses}
         />
       );
     }
     if (value && value !== '#') {
       return (
-        <a href={value} target="_blank" rel="noopener noreferrer" className="flex items-center text-neutral-500 hover:text-neutral-900">
-          <ExternalLink className="h-4 w-4" />
+        <a href={value} target="_blank" rel="noopener noreferrer" className="flex items-center text-neutral-900 hover:text-neutral-700">
+          <ExternalLink className="h-4 w-4" strokeWidth={1.25} />
         </a>
       );
     }
     return (
       <button onClick={() => setIsFocused(true)} className="text-neutral-400 hover:text-neutral-900">
-        <Edit className="h-4 w-4" />
+        <Edit className="h-4 w-4" strokeWidth={1.25} />
       </button>
+    );
+  }
+
+  if (type === 'date') {
+    return (
+      <DatePicker
+        value={localVal}
+        onChange={val => {
+          setLocalVal(val);
+          onSave(val);
+        }}
+        placeholder={placeholder}
+        className="w-full"
+        triggerClassName={`flex w-full cursor-pointer items-center justify-between bg-transparent text-[13px] text-neutral-900 outline-none hover:bg-neutral-50 rounded px-1 -mx-1 py-0.5 transition-colors ${className}`}
+      />
     );
   }
 
   return (
     <input
       ref={inputRef}
-      type={type === 'date' ? 'date' : 'text'}
+      type="text"
       value={localVal}
       onChange={e => setLocalVal(e.target.value)}
       onBlur={handleBlur}
       onKeyDown={handleKeyDown}
       placeholder={placeholder}
+      spellCheck={false}
       className={commonClasses}
     />
   );

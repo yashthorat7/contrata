@@ -2,7 +2,7 @@ import React from 'react';
 
 export function Table({ className = '', children, ...props }) {
   return (
-    <div className="w-full overflow-auto rounded-md border border-neutral-300 bg-white">
+    <div className="scrollbar-hide w-full overflow-auto rounded-md border border-neutral-300 bg-transparent">
       <table className={`w-full caption-bottom text-sm ${className}`} {...props}>
         {children}
       </table>
@@ -12,7 +12,7 @@ export function Table({ className = '', children, ...props }) {
 
 export function TableHeader({ className = '', children, ...props }) {
   return (
-    <thead className={`border-b border-neutral-300 bg-neutral-50/50 ${className}`} {...props}>
+    <thead className={`border-b border-neutral-300 bg-white ${className}`} {...props}>
       {children}
     </thead>
   );
@@ -37,7 +37,7 @@ export function TableRow({ className = '', children, ...props }) {
 export function TableHead({ className = '', children, ...props }) {
   return (
     <th
-      className={`h-8 border-r border-neutral-300 px-2 py-1.5 text-left align-middle font-medium text-neutral-600 last:border-r-0 ${className}`}
+      className={`h-10 border-r border-neutral-300 px-4 py-1 text-left align-middle font-medium text-neutral-900 last:border-r-0 ${className}`}
       {...props}>
       {children}
     </th>
@@ -46,7 +46,7 @@ export function TableHead({ className = '', children, ...props }) {
 
 export function TableCell({ className = '', children, ...props }) {
   return (
-    <td className={`border-r border-neutral-300 px-2 py-1.5 align-middle text-neutral-800 last:border-r-0 ${className}`} {...props}>
+    <td className={`border-r border-neutral-300 px-4 py-1.5 align-middle text-neutral-900 last:border-r-0 ${className}`} {...props}>
       {children}
     </td>
   );

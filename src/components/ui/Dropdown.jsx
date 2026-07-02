@@ -9,7 +9,6 @@ export function Dropdown({ trigger, children, align = 'left', className = '' }) 
   const menuRef = useRef(null);
 
   const toggleDropdown = e => {
-    e.stopPropagation();
     setIsOpen(prev => !prev);
   };
 
@@ -67,7 +66,6 @@ export function Dropdown({ trigger, children, align = 'left', className = '' }) 
           <div
             ref={menuRef}
             style={{ position: 'fixed', top: `${coords.top}px`, left: `${coords.left}px`, zIndex: 9999 }}
-            onClick={e => e.stopPropagation()}
             className="min-w-max overflow-hidden rounded-md border border-neutral-300 bg-white shadow-none">
             {typeof children === 'function' ? children({ close: () => setIsOpen(false) }) : children}
           </div>,

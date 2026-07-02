@@ -12,7 +12,7 @@ export default function App() {
     <BrowserRouter>
       <div className="bg-paper flex h-screen flex-col overflow-hidden">
         <Navbar />
-        <main className="mx-auto w-full max-w-4xl flex-1 overflow-y-auto px-4 lg:px-0">
+        <main className="scrollbar-hide w-full flex-1 overflow-y-auto">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/styling" element={<Styling />} />

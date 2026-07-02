@@ -1,17 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Textarea } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { generateContextPrompt } from '../../utils/prompts';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 export default function ContextStep() {
-  const [contextText, setContextText] = useState(() => {
-    return localStorage.getItem('hf_contextText') || '';
-  });
+  const [contextText, setContextText] = useLocalStorage('hf_contextText', '');
   const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    localStorage.setItem('hf_contextText', contextText);
-  }, [contextText]);
 
   const handleCopyTemplate = () => {
     const finalPrompt = generateContextPrompt(contextText);

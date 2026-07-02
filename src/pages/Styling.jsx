@@ -60,11 +60,7 @@ export default function Styling() {
           </div>
           <div className="pt-2">
             <p className="mb-2 text-sm text-neutral-500">Badge Dropdown</p>
-            <BadgeDropdown
-              current={badgeVal}
-              onSave={setBadgeVal}
-              typeMap={{ Applied: 'default', Interviewing: 'default', Rejected: 'outline' }}
-            />
+            <BadgeDropdown current={badgeVal} onSave={setBadgeVal} options={['Applied', 'Interviewing', 'Rejected']} />
           </div>
         </section>
 

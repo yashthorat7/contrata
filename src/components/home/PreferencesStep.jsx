@@ -4,13 +4,14 @@ import { Button, ConfirmButton } from '../ui/Button';
 import { SmartLinkStore } from './SmartLinkStore';
 import { usePreferences } from '../../hooks/usePreferences';
 import { generateSearchPrompt, generateLinksPrompt } from '../../utils/prompts';
+import { storage } from '../../utils/storage';
 
 export default function PreferencesStep({ activeTab }) {
   const { searchConfig, updateSearchConfig, links, setLinks, refs, handleLastFieldEnter } = usePreferences();
   const [copied, setCopied] = useState(false);
 
   const handleCopyPrompt = () => {
-    const contextText = localStorage.getItem('hf_contextText') || 'No context provided.';
+    const contextText = storage.get('hf_contextText', 'No context provided.');
     const prompt = activeTab === 'search' ? generateSearchPrompt(searchConfig, contextText) : generateLinksPrompt(links, contextText);
 
     navigator.clipboard.writeText(prompt);
@@ -19,7 +20,7 @@ export default function PreferencesStep({ activeTab }) {
   };
 
   const handleResetSearch = () => {
-    localStorage.removeItem('hf_searchConfig');
+    storage.remove('hf_searchConfig');
     window.location.reload(); // reset state
   };
 

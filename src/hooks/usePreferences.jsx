@@ -1,46 +1,19 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef } from 'react';
+import { useLocalStorage } from './useLocalStorage';
 
 export function usePreferences() {
-  const [searchConfig, setSearchConfig] = useState(() => {
-    const saved = localStorage.getItem('hf_searchConfig');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error('Failed to parse searchConfig from localStorage');
-      }
-    }
-    return {
-      jobType: '',
-      experienceLevel: '',
-      targetWebsites: '',
-      location: '',
-      salary: '',
-      publishedAge: '',
-      listingsLimit: '',
-      customNotes: ''
-    };
+  const [searchConfig, setSearchConfig] = useLocalStorage('hf_searchConfig', {
+    jobType: '',
+    experienceLevel: '',
+    targetWebsites: '',
+    location: '',
+    salary: '',
+    publishedAge: '',
+    listingsLimit: '',
+    customNotes: ''
   });
 
-  const [links, setLinks] = useState(() => {
-    const saved = localStorage.getItem('hf_links');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error('Failed to parse links from localStorage');
-      }
-    }
-    return [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem('hf_searchConfig', JSON.stringify(searchConfig));
-  }, [searchConfig]);
-
-  useEffect(() => {
-    localStorage.setItem('hf_links', JSON.stringify(links));
-  }, [links]);
+  const [links, setLinks] = useLocalStorage('hf_links', []);
 
   const updateSearchConfig = (key, value) => {
     const limitedValue = value.length > 30 ? value.substring(0, 30) : value;

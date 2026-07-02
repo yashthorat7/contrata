@@ -6,7 +6,7 @@ export default function Home() {
   const steps = useHomeTimeline();
 
   return (
-    <main className="mx-auto max-w-4xl py-10 font-sans antialiased">
+    <main className="mx-auto max-w-4xl px-4 py-10 font-sans antialiased lg:px-0">
       <div className="mb-16 flex flex-col gap-2">
         <h1 className="font-serif text-4xl leading-tight font-normal text-neutral-900">{homeData.hero.title}</h1>
         <p className="text-sm text-neutral-500">{homeData.hero.description}</p>
