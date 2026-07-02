@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { DocumentTextIcon } from '@heroicons/react/24/outline';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
 import { statusOptions, platformOptions, priorityOptions, trackerColumns as columns } from '../../data/trackerConfig';
@@ -20,7 +20,6 @@ export default function TrackerTable({
   filteredJobs,
   selectedJobIds,
   setSelectedJobIds,
-  selectedDetailsJobId,
   setSelectedDetailsJobId
 }) {
   const { contextMenu, setContextMenu, sortConfig, sortedJobs, handleSort, handleContextMenu, menuItems, toggleSelectAll, toggleSelect } =

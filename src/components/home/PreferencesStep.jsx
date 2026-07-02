@@ -7,12 +7,16 @@ import { generateSearchPrompt, generateLinksPrompt } from '../../utils/prompts';
 import { storage } from '../../utils/storage';
 
 export default function PreferencesStep({ activeTab }) {
-  const { searchConfig, updateSearchConfig, links, setLinks, refs, handleLastFieldEnter } = usePreferences();
+  const { searchConfig, updateSearchConfig, links, setLinks, refs } = usePreferences();
   const [copied, setCopied] = useState(false);
 
   const handleCopyPrompt = () => {
     const contextText = storage.get('hf_contextText', 'No context provided.');
-    const prompt = activeTab === 'search' ? generateSearchPrompt(searchConfig, contextText) : generateLinksPrompt(links, contextText);
+    const existingJobs = storage.get('job_hunter_jobs', []);
+    const prompt =
+      activeTab === 'search'
+        ? generateSearchPrompt(searchConfig, contextText, existingJobs)
+        : generateLinksPrompt(links, contextText, existingJobs);
 
     navigator.clipboard.writeText(prompt);
     setCopied(true);
@@ -103,7 +107,11 @@ export default function PreferencesStep({ activeTab }) {
       <div className="mt-3 flex items-center gap-3">
         {activeTab === 'search' ? (
           <>
-            <Button variant="primary" onClick={handleCopyPrompt} className="min-w-[120px]">
+            <Button
+              variant="primary"
+              onClick={handleCopyPrompt}
+              className="min-w-[120px]"
+              disabled={!Object.values(searchConfig).some(v => String(v).trim())}>
               {copied ? 'Copied!' : 'Copy prompt'}
             </Button>
             <ConfirmButton variant="outline" onConfirm={handleResetSearch}>
@@ -112,7 +120,11 @@ export default function PreferencesStep({ activeTab }) {
           </>
         ) : (
           <>
-            <Button variant="primary" className="flex min-w-[120px] items-center justify-center gap-1.5" onClick={handleCopyPrompt}>
+            <Button
+              variant="primary"
+              className="flex min-w-[120px] items-center justify-center gap-1.5"
+              onClick={handleCopyPrompt}
+              disabled={links.length === 0}>
               {copied ? (
                 'Copied!'
               ) : (

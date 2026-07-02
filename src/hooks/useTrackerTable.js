@@ -1,4 +1,6 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { storage } from '../utils/storage';
 
 export function useTrackerTable({
   filteredJobs,
@@ -11,6 +13,7 @@ export function useTrackerTable({
 }) {
   const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, jobId: null });
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const navigate = useNavigate();
 
   const sortedJobs = useMemo(() => {
     if (!sortConfig.key) return filteredJobs;
@@ -70,6 +73,20 @@ export function useTrackerTable({
       setSelectedJobIds([]);
     } else if (action === 'View Details') {
       setSelectedDetailsJobId?.(jobId);
+    } else if (action === 'Make Resume') {
+      const job = filteredJobs.find(j => j.id === jobId);
+      if (!job) return;
+      const jd = [
+        job.role && `Role: ${job.role}`,
+        job.company && `Company: ${job.company}`,
+        job.location && `Location: ${job.location}${job.locationType ? ` (${job.locationType})` : ''}`,
+        job.salary && `Salary: ${job.salary}`,
+        job.description && `\n${job.description}`
+      ]
+        .filter(Boolean)
+        .join('\n');
+      storage.set('hf_resume_jd', jd);
+      navigate('/resume');
     } else {
       alert(`${action} (Feature coming soon!)`);
     }

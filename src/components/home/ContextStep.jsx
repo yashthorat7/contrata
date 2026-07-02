@@ -24,7 +24,7 @@ export default function ContextStep() {
         placeholder={`e.g.,\nName: Jane Doe\nTitle: Full Stack Developer\nProjects: Scalable analytics dashboard using React & Python\nSkills: React, Node.js, AWS, Postgres\nAchievements: Reduced load times by 40%...`}
       />
       <div className="mt-3 flex justify-end">
-        <Button variant="link" size="sm" onClick={handleCopyTemplate}>
+        <Button variant="link" size="sm" onClick={handleCopyTemplate} disabled={!contextText.trim()}>
           {copied ? 'Copied!' : 'Copy prompt'}
         </Button>
       </div>
