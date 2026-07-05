@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { getIndianDate } from '../../utils/formatters';
-import { statusOptions, platformOptions, priorityOptions, trackerColumns as columns } from '../../data/trackerConfig';
+import { priorityOptions, trackerColumns as columns } from '../../data/trackerConfig';
 import { BadgeDropdown } from '../ui/BadgeDropdown';
 import { DatePicker } from '../ui/DatePicker';
 import { TableRow, TableCell } from '../ui/Table';
+import { useTrackerOptions } from '../../hooks/useTrackerOptions';
 
 const getInitialDraft = () => ({
   company: '',
@@ -21,6 +22,7 @@ const getInitialDraft = () => ({
 });
 
 export default function TrackerAddRow({ addJob }) {
+  const { statusOptions, platformOptions } = useTrackerOptions();
   const [templateDraft, setTemplateDraft] = useState(getInitialDraft());
   const tplRowRef = useRef(null);
 

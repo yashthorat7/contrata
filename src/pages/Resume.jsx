@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useResume } from '../hooks/useResume';
 import { useResumeStacking } from '../hooks/useResumeStacking';
 import ResumeEditor from '../components/resume/ResumeEditor';
@@ -11,13 +11,6 @@ export default function Resume() {
   const { markdownContent, updateMarkdown, resetResume, exportPDF } = useResume();
   const { containerRef, shouldStack, lhsPercent } = useResumeStacking();
   const [showRephrase, setShowRephrase] = useState(false);
-
-  const applyRephrase = useCallback(
-    text => {
-      updateMarkdown(text);
-    },
-    [updateMarkdown]
-  );
 
   useEffect(() => {
     if (storage.get('hf_resume_jd', '')) setShowRephrase(true);
@@ -34,7 +27,13 @@ export default function Resume() {
             <Button variant="outline" size="sm" onClick={resetResume}>
               Reset
             </Button>
-            {showRephrase && <RephrasePanel onApply={applyRephrase} onClose={() => setShowRephrase(false)} />}
+            {showRephrase && (
+              <RephrasePanel
+                resumeMarkdown={markdownContent}
+                onApply={updateMarkdown}
+                onClose={() => setShowRephrase(false)}
+              />
+            )}
           </div>
           <Button variant="outline" size="sm" onClick={exportPDF} disabled={!markdownContent.trim()}>
             Export

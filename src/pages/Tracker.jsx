@@ -8,11 +8,18 @@ import { Tabs } from '../components/ui/Tabs';
 import { Button } from '../components/ui/Button';
 import { Filter } from '../components/ui/Icons';
 import { Select } from '../components/ui/Select';
+import { storage } from '../utils/storage';
 
 export default function Tracker() {
   const trackerEngine = useTrackerEngine();
-  const [viewMode, setViewMode] = useState('table');
+  const [viewModeState, setViewModeState] = useState(() => storage.get('hf_tracker_view_mode', 'table'));
   const [selectedJobIds, setSelectedJobIds] = useState([]);
+
+  const setViewMode = mode => {
+    storage.set('hf_tracker_view_mode', mode);
+    setViewModeState(mode);
+  };
+  const viewMode = viewModeState;
   const [selectedDetailsJobId, setSelectedDetailsJobId] = useState(null);
   const [renderedJob, setRenderedJob] = useState(null);
   const [showFilter, setShowFilter] = useState(false);

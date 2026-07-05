@@ -10,7 +10,8 @@ const DEFAULT_FILTERS = {
   platform: [],
   locationType: [],
   salaryMin: 0,
-  salaryMax: 0
+  salaryMax: 0,
+  jobState: ['unmarked', 'saved']
 };
 
 function sortJobs(jobs, sortKey) {
@@ -83,20 +84,35 @@ export default function useTrackerEngine() {
         }
       }
 
-      return matchSearch && matchStatus && matchPriority && matchPlatform && matchLocType && matchSalary;
+      const states = filters.jobState || ['unmarked', 'saved'];
+      const isSaved = job.saved && !job.archived;
+      const isArchived = job.archived;
+      const isUnmarked = !job.saved && !job.archived;
+
+      const matchJobState =
+        (states.includes('unmarked') && isUnmarked) ||
+        (states.includes('saved') && isSaved) ||
+        (states.includes('archived') && isArchived);
+
+      return matchSearch && matchStatus && matchPriority && matchPlatform && matchLocType && matchSalary && matchJobState;
     });
 
     return sortJobs(result, filters.sort);
   }, [jobs, searchQuery, filters]);
 
   const activeFilterCount = useMemo(() => {
+    const states = filters.jobState || ['unmarked', 'saved'];
+    const hasDefaultStates =
+      states.length === 2 && states.includes('unmarked') && states.includes('saved');
+
     return [
       filters.sort !== '',
       filters.status.length > 0,
       filters.priority.length > 0,
       filters.platform.length > 0,
       filters.locationType.length > 0,
-      filters.salaryMin > 0 || filters.salaryMax > 0
+      filters.salaryMin > 0 || filters.salaryMax > 0,
+      !hasDefaultStates
     ].filter(Boolean).length;
   }, [filters]);
 

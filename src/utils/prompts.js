@@ -222,15 +222,16 @@ export const generateContextPrompt = (contextText = '') => {
   return `${CONTEXT_PROMPT}\n\n\`\`\`markdown\n${dataToFormat}\n\`\`\``;
 };
 
-export const generateResumePrompt = (contextText = '', jobDescription = '') => {
-  return `You are a world-class professional resume writer specializing in high-density, single-page A4 engineering resumes. Your task is to produce a tailored Markdown resume by following the five precise section rules below — no deviations.
+export const generateResumePrompt = (contextText = '', jobDescription = '', currentResumeText = '') => {
+  const referenceResume = currentResumeText || DEFAULT_RESUME_MD;
+  return `You are a world-class professional resume writer specializing in high-density, single-page A4 engineering resumes. Your task is to produce a tailored Markdown resume by following the six precise section rules below — no deviations.
 
 ---
 
 ## INPUTS
 
-### DEFAULT RESUME (structure, verbatim sections, and reference formatting)
-${DEFAULT_RESUME_MD}
+### REFERENCE RESUME (structure, verbatim sections, and reference formatting)
+${referenceResume}
 
 ### CANDIDATE PROFILE DATA (RAG — source for projects, skills)
 ${contextText || 'No custom profile data provided.'}
@@ -243,10 +244,10 @@ ${jobDescription || 'No job description provided.'}
 ## OUTPUT RULES — follow every rule exactly, in order
 
 ### RULE 1 — HEADER (copy verbatim, zero changes)
-Copy the candidate's name and the entire contact block (phone, email, LinkedIn, portfolio, GitHub, LeetCode, X) exactly as they appear in the Default Resume. Do not add, remove, or reformat a single character.
+Copy the candidate's name and the entire contact block (phone, email, LinkedIn, portfolio, GitHub, LeetCode, X) exactly as they appear in the Reference Resume. Do not add, remove, or reformat a single character.
 
 ### RULE 2 — EXPERIENCE (copy verbatim, zero changes)
-Copy the entire ## Experience section word-for-word from the Default Resume. Do not edit, reorder, or paraphrase any bullet.
+Copy the entire ## Experience section word-for-word from the Reference Resume. Do not edit, reorder, or paraphrase any bullet.
 
 ### RULE 3 — PROJECTS (generate from RAG, strict character budget)
 From the Candidate Profile Data, select the 3 projects that are the strongest match for the Target Job Description. For each selected project:
@@ -264,21 +265,22 @@ From the Candidate Profile Data, select the 3 projects that are the strongest ma
 
 Do not add a 4th bullet. Do not merge two projects into one.
 
-### RULE 4 — SKILLS (select from RAG, strict line-length budget)
+### RULE 4 — SKILLS (select from RAG, bullet-point format)
 From the Candidate Profile Data, select the skills most relevant to the Target Job Description and organize them into 4 to 5 groups. Follow these rules:
 
-- Format every line as: **CategoryName**: Skill1 • Skill2 • Skill3 • ...
-- Each complete line (including the bold category label, colon, space, and all skills) MUST be strictly between 75 and 105 characters long. Count carefully — trim or add skills to hit the budget.
+- Each line MUST be a bullet point starting with "- " (dash space)
+- Format every line as: - **CategoryName**: Skill1 • Skill2 • Skill3 • ...
+- Each complete line (including "- ", the bold category label, colon, space, and all skills) MUST be strictly between 75 and 105 characters long.
 - Use exactly 4 or 5 category lines total — no more, no fewer.
 - Order categories by relevance to the job (most relevant first).
 - Separate skills within a line with " • " (space-bullet-space).
 - Do not repeat the same skill in two different categories.
 
 ### RULE 5 — ACHIEVEMENTS (reorder by relevance, copy text verbatim)
-Take all 6 achievement entries from the Default Resume's ## Achievements section exactly as written (same hyperlinks, same bold markers, same text). Reorder them so the one most relevant to the Target Job Description appears first, and the least relevant appears last. Do not edit, reword, or remove any entry.
+Take all achievement entries from the Reference Resume's ## Achievements section exactly as written (same hyperlinks, same bold markers, same text). Reorder them so the one most relevant to the Target Job Description appears first, and the least relevant appears last. Do not edit, reword, or remove any entry.
 
 ### RULE 6 — EDUCATION (copy verbatim, zero changes)
-Copy the entire ## Education section word-for-word from the Default Resume.
+Copy the entire ## Education section word-for-word from the Reference Resume.
 
 ---
 
@@ -286,4 +288,22 @@ Copy the entire ## Education section word-for-word from the Default Resume.
 - Return ONLY the final Markdown. No explanations, no notes, no code block wrappers (no \`\`\`markdown fences), no preamble, no closing remarks.
 - Section order in output: Header → ## Experience → ## Projects → ## Skills → ## Achievements → ## Education
 - Use ## for all top-level section headers. Use ### only for individual project title lines.`;
+};
+
+export const generateSimpleEditPrompt = (currentResumeText = '', userInstruction = '') => {
+  return `You are a professional resume editor.
+Here is the current resume in Markdown:
+
+\`\`\`markdown
+${currentResumeText}
+\`\`\`
+
+Here are the instructions on how to update/edit this resume:
+${userInstruction}
+
+Please update the resume according to these instructions. Follow these rules strictly:
+- Preserve the exact layout and sections of the original resume unless the instructions ask to modify them.
+- Output ONLY the updated Markdown resume.
+- Do NOT wrap the response in markdown code blocks (fences like \`\`\`markdown or \`\`\`).
+- Do NOT write any introduction, commentary, or outro. Just output the updated markdown text.`;
 };

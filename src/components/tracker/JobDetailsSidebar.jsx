@@ -3,10 +3,12 @@ import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { BadgeDropdown } from '../ui/BadgeDropdown';
 import ReactMarkdown from 'react-markdown';
-import { statusOptions, priorityOptions } from '../../data/trackerConfig';
+import { priorityOptions } from '../../data/trackerConfig';
 import { CurrencyDollarIcon, ChartBarIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { useTrackerOptions } from '../../hooks/useTrackerOptions';
 
 export default function JobDetailsSidebar({ job, onClose, onUpdateJob }) {
+  const { statusOptions } = useTrackerOptions();
   if (!job) return null;
 
   const handleFieldUpdate = (field, value) => {

@@ -1,7 +1,9 @@
 import React, { useRef, useMemo } from 'react';
 import { SalaryRangeFilter } from './SalaryRangeFilter';
-import { statusOptions, platformOptions, priorityOptions } from '../../data/trackerConfig';
+import { priorityOptions } from '../../data/trackerConfig';
 import { useOutsideClick } from '../../hooks/useOutsideClick';
+import { Checkbox } from '../ui/Checkbox';
+import { useTrackerOptions } from '../../hooks/useTrackerOptions';
 
 const SORT_OPTIONS = [
   { label: 'Date Posted (Newest)', value: 'datePosted_desc' },
@@ -48,11 +50,30 @@ function PillGroup({ options, selected, onChange, multi = false }) {
 }
 
 export default function TrackerFilterPanel({ triggerRef, onClose, filters, onFiltersChange }) {
+  const { statusOptions, platformOptions } = useTrackerOptions();
   const panelRef = useRef(null);
   const refsToWatch = useMemo(() => [panelRef, triggerRef], [triggerRef]);
   useOutsideClick(refsToWatch, onClose, true, 'mousedown');
 
   const set = (key, val) => onFiltersChange({ ...filters, [key]: val });
+  
+  const states = filters.jobState || ['unmarked', 'saved'];
+  const unmarkedChecked = states.includes('unmarked');
+  const archivedChecked = states.includes('archived');
+  const savedChecked = states.includes('saved');
+
+
+  const handleToggleState = stateVal => {
+    let nextStates;
+    if (states.includes(stateVal)) {
+      nextStates = states.filter(s => s !== stateVal);
+    } else {
+      nextStates = [...states, stateVal];
+    }
+    set('jobState', nextStates);
+  };
+
+
 
   const activeCount = [
     filters.sort !== '',
@@ -60,7 +81,8 @@ export default function TrackerFilterPanel({ triggerRef, onClose, filters, onFil
     filters.priority.length > 0,
     filters.platform.length > 0,
     filters.locationType.length > 0,
-    filters.salaryMin > 0 || filters.salaryMax > 0
+    filters.salaryMin > 0 || filters.salaryMax > 0,
+    !(states.length === 2 && states.includes('unmarked') && states.includes('saved'))
   ].filter(Boolean).length;
 
   return (
@@ -78,11 +100,12 @@ export default function TrackerFilterPanel({ triggerRef, onClose, filters, onFil
                 platform: [],
                 locationType: [],
                 salaryMin: 0,
-                salaryMax: 0
+                salaryMax: 0,
+                jobState: ['unmarked', 'saved']
               })
             }
             className="text-xs text-neutral-400 hover:text-neutral-700">
-            Clear all ({activeCount})
+            Clear all
           </button>
         )}
       </div>
@@ -105,6 +128,32 @@ export default function TrackerFilterPanel({ triggerRef, onClose, filters, onFil
                 {filters.sort === opt.value && <span className="h-1.5 w-1.5 rounded-full bg-neutral-800" />}
               </button>
             ))}
+          </div>
+        </div>
+
+        <hr className="border-neutral-200" />
+
+        <div>
+          <SectionLabel>state</SectionLabel>
+          <div className="flex flex-col gap-2">
+            <Checkbox
+              id="filter-state-unmarked"
+              checked={unmarkedChecked}
+              onChange={() => handleToggleState('unmarked')}
+              label="Unmarked"
+            />
+            <Checkbox
+              id="filter-state-archived"
+              checked={archivedChecked}
+              onChange={() => handleToggleState('archived')}
+              label="Archived"
+            />
+            <Checkbox
+              id="filter-state-saved"
+              checked={savedChecked}
+              onChange={() => handleToggleState('saved')}
+              label="Saved"
+            />
           </div>
         </div>
 

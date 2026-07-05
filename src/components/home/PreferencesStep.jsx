@@ -9,9 +9,31 @@ import { storage } from '../../utils/storage';
 export default function PreferencesStep({ activeTab }) {
   const { searchConfig, updateSearchConfig, links, setLinks, refs } = usePreferences();
   const [copied, setCopied] = useState(false);
+  const [error, setError] = useState('');
 
   const handleCopyPrompt = () => {
-    const contextText = storage.get('hf_contextText', 'No context provided.');
+    const contextText = storage.get('hf_contextText', '');
+    if (!contextText.trim()) {
+      setError('Missing Profile Info');
+      setTimeout(() => setError(''), 2000);
+      return;
+    }
+
+    if (activeTab === 'search') {
+      const hasPref = Object.values(searchConfig).some(v => String(v).trim());
+      if (!hasPref) {
+        setError('Missing Preferences');
+        setTimeout(() => setError(''), 2000);
+        return;
+      }
+    } else {
+      if (links.length === 0) {
+        setError('No links added');
+        setTimeout(() => setError(''), 2000);
+        return;
+      }
+    }
+
     const existingJobs = storage.get('job_hunter_jobs', []);
     const prompt =
       activeTab === 'search'
@@ -78,18 +100,10 @@ export default function PreferencesStep({ activeTab }) {
               inputRef={refs.age}
               value={searchConfig.publishedAge}
               onChange={val => updateSearchConfig('publishedAge', val)}
-              nextRef={refs.limit}
-              placeholder="time window"
-            />{' '}
-            and limit results to{' '}
-            <EditableSpan
-              inputRef={refs.limit}
-              value={searchConfig.listingsLimit}
-              onChange={val => updateSearchConfig('listingsLimit', val)}
               nextRef={refs.notes}
-              placeholder="max items"
-            />{' '}
-            items. Additionally, the role should focus on{' '}
+              placeholder="time window"
+            />
+            . Additionally, the role should focus on{' '}
             <EditableSpan
               inputRef={refs.notes}
               value={searchConfig.customNotes}
@@ -110,9 +124,8 @@ export default function PreferencesStep({ activeTab }) {
             <Button
               variant="primary"
               onClick={handleCopyPrompt}
-              className="min-w-[120px]"
-              disabled={!Object.values(searchConfig).some(v => String(v).trim())}>
-              {copied ? 'Copied!' : 'Copy prompt'}
+              className="min-w-[120px]">
+              {error || (copied ? 'Copied!' : 'Copy prompt')}
             </Button>
             <ConfirmButton variant="outline" onConfirm={handleResetSearch}>
               Reset
@@ -123,15 +136,14 @@ export default function PreferencesStep({ activeTab }) {
             <Button
               variant="primary"
               className="flex min-w-[120px] items-center justify-center gap-1.5"
-              onClick={handleCopyPrompt}
-              disabled={links.length === 0}>
-              {copied ? (
+              onClick={handleCopyPrompt}>
+              {error || (copied ? (
                 'Copied!'
               ) : (
                 <>
                   Copy prompt <span className="text-xs font-medium opacity-60">({links.length})</span>
                 </>
-              )}
+              ))}
             </Button>
             <ConfirmButton variant="outline" onConfirm={() => setLinks([])}>
               Reset

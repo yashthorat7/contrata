@@ -87,8 +87,6 @@ export function useTrackerTable({
         .join('\n');
       storage.set('hf_resume_jd', jd);
       navigate('/resume');
-    } else {
-      alert(`${action} (Feature coming soon!)`);
     }
   };
 

@@ -2,14 +2,14 @@
 import React from 'react';
 import { DocumentTextIcon } from '@heroicons/react/24/outline';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
-import { statusOptions, platformOptions, priorityOptions, trackerColumns as columns } from '../../data/trackerConfig';
+import { priorityOptions, trackerColumns as columns } from '../../data/trackerConfig';
 import { EditableCell } from '../ui/EditableCell';
 import { BadgeDropdown } from '../ui/BadgeDropdown';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '../ui/Table';
 import { ContextMenu } from '../ui/ContextMenu';
 import { Checkbox } from '../ui/Checkbox';
 import TrackerAddRow from './TrackerAddRow';
-
+import { useTrackerOptions } from '../../hooks/useTrackerOptions';
 import { useTrackerTable } from '../../hooks/useTrackerTable';
 
 export default function TrackerTable({
@@ -22,6 +22,7 @@ export default function TrackerTable({
   setSelectedJobIds,
   setSelectedDetailsJobId
 }) {
+  const { statusOptions, platformOptions } = useTrackerOptions();
   const { contextMenu, setContextMenu, sortConfig, sortedJobs, handleSort, handleContextMenu, menuItems, toggleSelectAll, toggleSelect } =
     useTrackerTable({
       filteredJobs,
