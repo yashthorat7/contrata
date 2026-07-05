@@ -28,11 +28,7 @@ export default function Resume() {
               Reset
             </Button>
             {showRephrase && (
-              <RephrasePanel
-                resumeMarkdown={markdownContent}
-                onApply={updateMarkdown}
-                onClose={() => setShowRephrase(false)}
-              />
+              <RephrasePanel resumeMarkdown={markdownContent} onApply={updateMarkdown} onClose={() => setShowRephrase(false)} />
             )}
           </div>
           <Button variant="outline" size="sm" onClick={exportPDF} disabled={!markdownContent.trim()}>

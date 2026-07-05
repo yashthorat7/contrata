@@ -56,12 +56,11 @@ export default function TrackerFilterPanel({ triggerRef, onClose, filters, onFil
   useOutsideClick(refsToWatch, onClose, true, 'mousedown');
 
   const set = (key, val) => onFiltersChange({ ...filters, [key]: val });
-  
+
   const states = filters.jobState || ['unmarked', 'saved'];
   const unmarkedChecked = states.includes('unmarked');
   const archivedChecked = states.includes('archived');
   const savedChecked = states.includes('saved');
-
 
   const handleToggleState = stateVal => {
     let nextStates;
@@ -72,8 +71,6 @@ export default function TrackerFilterPanel({ triggerRef, onClose, filters, onFil
     }
     set('jobState', nextStates);
   };
-
-
 
   const activeCount = [
     filters.sort !== '',
@@ -148,12 +145,7 @@ export default function TrackerFilterPanel({ triggerRef, onClose, filters, onFil
               onChange={() => handleToggleState('archived')}
               label="Archived"
             />
-            <Checkbox
-              id="filter-state-saved"
-              checked={savedChecked}
-              onChange={() => handleToggleState('saved')}
-              label="Saved"
-            />
+            <Checkbox id="filter-state-saved" checked={savedChecked} onChange={() => handleToggleState('saved')} label="Saved" />
           </div>
         </div>
 

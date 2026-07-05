@@ -4,14 +4,7 @@ import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { Input } from '../ui/Input';
 
-export default function SettingsOptionsCard({
-  title,
-  description,
-  options,
-  setOptions,
-  defaultOption,
-  placeholder
-}) {
+export default function SettingsOptionsCard({ title, description, options, setOptions, defaultOption, placeholder }) {
   const [newVal, setNewVal] = useState('');
 
   const handleAdd = e => {
@@ -52,13 +45,7 @@ export default function SettingsOptionsCard({
           ))}
         </div>
         <form onSubmit={handleAdd} className="flex max-w-sm gap-2">
-          <Input
-            type="text"
-            value={newVal}
-            onChange={e => setNewVal(e.target.value)}
-            placeholder={placeholder}
-            className="flex-1"
-          />
+          <Input type="text" value={newVal} onChange={e => setNewVal(e.target.value)} placeholder={placeholder} className="flex-1" />
           <Button type="submit" variant="outline" size="default" disabled={!newVal.trim()}>
             Add
           </Button>

@@ -24,7 +24,9 @@ export default function SettingsDataExport() {
         <CardDescription>Export all your tracked job applications, status history, and notes as a JSON file.</CardDescription>
       </CardHeader>
       <CardContent>
-        <Button variant="primary" onClick={handleExport}>Export Table</Button>
+        <Button variant="primary" onClick={handleExport}>
+          Export Table
+        </Button>
       </CardContent>
     </Card>
   );

@@ -90,9 +90,7 @@ export default function useTrackerEngine() {
       const isUnmarked = !job.saved && !job.archived;
 
       const matchJobState =
-        (states.includes('unmarked') && isUnmarked) ||
-        (states.includes('saved') && isSaved) ||
-        (states.includes('archived') && isArchived);
+        (states.includes('unmarked') && isUnmarked) || (states.includes('saved') && isSaved) || (states.includes('archived') && isArchived);
 
       return matchSearch && matchStatus && matchPriority && matchPlatform && matchLocType && matchSalary && matchJobState;
     });
@@ -102,8 +100,7 @@ export default function useTrackerEngine() {
 
   const activeFilterCount = useMemo(() => {
     const states = filters.jobState || ['unmarked', 'saved'];
-    const hasDefaultStates =
-      states.length === 2 && states.includes('unmarked') && states.includes('saved');
+    const hasDefaultStates = states.length === 2 && states.includes('unmarked') && states.includes('saved');
 
     return [
       filters.sort !== '',

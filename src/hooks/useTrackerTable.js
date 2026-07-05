@@ -87,6 +87,9 @@ export function useTrackerTable({
         .join('\n');
       storage.set('hf_resume_jd', jd);
       navigate('/resume');
+    } else if (action === 'Do Outreach') {
+      storage.set('hf_outreach_selected_job_id', jobId);
+      navigate('/outreach');
     }
   };
 
@@ -107,7 +110,7 @@ export function useTrackerTable({
     return [
       { label: 'View Details', onClick: () => handleContextMenuAction('View Details', contextMenu.jobId) },
       { label: 'Make Resume', onClick: () => handleContextMenuAction('Make Resume', contextMenu.jobId) },
-      { label: 'Make Cover Letter', onClick: () => handleContextMenuAction('Make Cover Letter', contextMenu.jobId) },
+      { label: 'Do Outreach', onClick: () => handleContextMenuAction('Do Outreach', contextMenu.jobId) },
       ...(targetJob.saved
         ? [
             { label: 'Unmark', onClick: () => handleContextMenuAction('unmark', contextMenu.jobId) },

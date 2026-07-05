@@ -68,13 +68,15 @@ export default function RephrasePanel({ resumeMarkdown, onApply, onClose }) {
   };
 
   const stripFences = text =>
-    text.replace(/^```markdown\s*/i, '').replace(/^```\s*/m, '').replace(/```\s*$/, '').trim();
+    text
+      .replace(/^```markdown\s*/i, '')
+      .replace(/^```\s*/m, '')
+      .replace(/```\s*$/, '')
+      .trim();
 
   const handleApply = async () => {
     const provider = storage.get('hf_api_provider', 'gemini');
-    const activeKey = provider === 'gemini'
-      ? storage.get('hf_gemini_api_key', '')
-      : storage.get('hf_groq_api_key', '');
+    const activeKey = provider === 'gemini' ? storage.get('hf_gemini_api_key', '') : storage.get('hf_groq_api_key', '');
 
     if (!response.trim()) return showError(setError, 'Missing Input');
     if (!activeKey?.trim()) return showError(setError, 'Missing API Key');
@@ -82,15 +84,16 @@ export default function RephrasePanel({ resumeMarkdown, onApply, onClose }) {
     setLoading(true);
     try {
       const prompt = generateSimpleEditPrompt(resumeMarkdown, response);
-      const raw = provider === 'gemini'
-        ? await callGemini(activeKey, prompt)
-        : await callGroq(activeKey, prompt);
+      const raw = provider === 'gemini' ? await callGemini(activeKey, prompt) : await callGroq(activeKey, prompt);
 
       if (!raw) throw new Error('No response from AI');
 
       onApply(stripFences(raw));
       setApplied(true);
-      setTimeout(() => { setApplied(false); onClose(); }, 1200);
+      setTimeout(() => {
+        setApplied(false);
+        onClose();
+      }, 1200);
     } catch {
       showError(setError, 'API Error');
     } finally {
@@ -106,7 +109,12 @@ export default function RephrasePanel({ resumeMarkdown, onApply, onClose }) {
         variant="ghost"
         value={response}
         onChange={e => setResponse(e.target.value)}
-        onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); copyPrompt(); } }}
+        onKeyDown={e => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            copyPrompt();
+          }
+        }}
         placeholder="Enter job description here… (Enter to copy prompt)"
         className="h-[160px]"
       />
@@ -115,7 +123,7 @@ export default function RephrasePanel({ resumeMarkdown, onApply, onClose }) {
           {copyError || (copied ? 'Copied!' : 'Copy Prompt')}
         </Button>
         <Button variant="primary" size="sm" onClick={handleApply} disabled={loading}>
-          {error || (loading ? 'Generating...' : (applied ? 'Applied!' : 'Use AI'))}
+          {error || (loading ? 'Generating...' : applied ? 'Applied!' : 'Use AI')}
         </Button>
       </div>
     </div>

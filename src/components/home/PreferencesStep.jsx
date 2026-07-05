@@ -121,10 +121,7 @@ export default function PreferencesStep({ activeTab }) {
       <div className="mt-3 flex items-center gap-3">
         {activeTab === 'search' ? (
           <>
-            <Button
-              variant="primary"
-              onClick={handleCopyPrompt}
-              className="min-w-[120px]">
+            <Button variant="primary" onClick={handleCopyPrompt} className="min-w-[120px]">
               {error || (copied ? 'Copied!' : 'Copy prompt')}
             </Button>
             <ConfirmButton variant="outline" onConfirm={handleResetSearch}>
@@ -133,17 +130,15 @@ export default function PreferencesStep({ activeTab }) {
           </>
         ) : (
           <>
-            <Button
-              variant="primary"
-              className="flex min-w-[120px] items-center justify-center gap-1.5"
-              onClick={handleCopyPrompt}>
-              {error || (copied ? (
-                'Copied!'
-              ) : (
-                <>
-                  Copy prompt <span className="text-xs font-medium opacity-60">({links.length})</span>
-                </>
-              ))}
+            <Button variant="primary" className="flex min-w-[120px] items-center justify-center gap-1.5" onClick={handleCopyPrompt}>
+              {error ||
+                (copied ? (
+                  'Copied!'
+                ) : (
+                  <>
+                    Copy prompt <span className="text-xs font-medium opacity-60">({links.length})</span>
+                  </>
+                ))}
             </Button>
             <ConfirmButton variant="outline" onConfirm={() => setLinks([])}>
               Reset
