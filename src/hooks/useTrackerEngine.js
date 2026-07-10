@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { useLocalStorage } from './useLocalStorage';
-import { DEFAULT_JOBS } from '../data/mockJobs';
 import { parseSalaryToNumber } from '../utils/salary';
 
 const DEFAULT_FILTERS = {
@@ -37,7 +36,7 @@ function sortJobs(jobs, sortKey) {
 }
 
 export default function useTrackerEngine() {
-  const [jobs, setJobs] = useLocalStorage('job_hunter_jobs', DEFAULT_JOBS);
+  const [jobs, setJobs] = useLocalStorage('job_hunter_jobs', []);
   const [searchQuery, setSearchQuery] = useLocalStorage('job_hunter_search', '');
   const [filters, setFilters] = useLocalStorage('job_hunter_filters', DEFAULT_FILTERS);
 

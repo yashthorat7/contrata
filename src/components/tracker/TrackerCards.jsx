@@ -42,9 +42,7 @@ export default function TrackerCards({ updateJob, filteredJobs, selectedDetailsJ
         .filter(Boolean)
         .join('\n');
       storage.set('hf_resume_jd', jd);
-    } else if (action === 'Do Outreach') {
-      storage.set('hf_outreach_selected_job_id', jobId);
-      navigate('/outreach');
+      navigate('/resume');
     }
   };
 
@@ -55,7 +53,6 @@ export default function TrackerCards({ updateJob, filteredJobs, selectedDetailsJ
     return [
       { label: 'View Details', onClick: () => handleContextMenuAction('View Details', contextMenu.jobId) },
       { label: 'Make Resume', onClick: () => handleContextMenuAction('Make Resume', contextMenu.jobId) },
-      { label: 'Do Outreach', onClick: () => handleContextMenuAction('Do Outreach', contextMenu.jobId) },
       ...(targetJob.saved
         ? [
             { label: 'Unmark', onClick: () => handleContextMenuAction('unmark', contextMenu.jobId) },

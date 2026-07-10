@@ -26,7 +26,6 @@ import {
   HomeIcon,
   ChartBarIcon,
   DocumentIcon,
-  EnvelopeIcon,
   Cog8ToothIcon,
   FunnelIcon
 } from '@heroicons/react/24/outline';
@@ -34,7 +33,6 @@ import {
 export const NavHome = HomeIcon;
 export const NavTracker = ChartBarIcon;
 export const NavResume = DocumentIcon;
-export const NavOutreach = EnvelopeIcon;
 export const NavSettings = Cog8ToothIcon;
 
 export const Grip = props => (

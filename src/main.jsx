@@ -3,14 +3,14 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.jsx';
 
-document.title = 'HireFirst';
+document.title = 'HireMeFirst';
 let metaDescription = document.querySelector('meta[name="description"]');
 if (!metaDescription) {
   metaDescription = document.createElement('meta');
   metaDescription.name = 'description';
   document.head.appendChild(metaDescription);
 }
-metaDescription.content = 'HireFirst - The zero-shadow minimalist recruitment platform.';
+metaDescription.content = 'HireMeFirst - The zero-shadow minimalist recruitment platform.';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

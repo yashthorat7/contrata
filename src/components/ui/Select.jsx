@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
 import { useOutsideClick } from '../../hooks/useOutsideClick';
 
-export function Select({ options = [], value, onChange, placeholder = 'Select an option', className = '', buttonClassName = '' }) {
+export function Select({ options = [], value, onChange, placeholder = 'Select an option', className = '', buttonClassName = '', hideChevron = false }) {
   const [isOpen, setIsOpen] = useState(false);
   const [confirmingValue, setConfirmingValue] = useState(null);
   const containerRef = useRef(null);
@@ -27,8 +27,8 @@ export function Select({ options = [], value, onChange, placeholder = 'Select an
           if (isOpen) setConfirmingValue(null);
         }}
         className={`flex h-8 w-full items-center justify-between rounded-md border border-neutral-300 bg-white px-2 py-1 text-sm text-neutral-800 shadow-none transition-colors focus:border-neutral-400 focus:ring-0 focus:outline-none ${buttonClassName}`}>
-        <span className={selectedOption ? '' : 'text-neutral-500'}>{selectedOption ? selectedOption.label : placeholder}</span>
-        <ChevronDownIcon className="h-4 w-4 text-neutral-500" />
+        <span className={`truncate text-left ${selectedOption ? '' : 'text-neutral-500'}`}>{selectedOption ? selectedOption.label : placeholder}</span>
+        {!hideChevron && <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 text-neutral-500" />}
       </button>
 
       {isOpen && (

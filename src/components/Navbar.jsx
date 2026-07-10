@@ -1,13 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Tabs } from './ui/Tabs';
 import navTabs from '../data/navigation.json';
-import { NavHome, NavTracker, NavResume, NavOutreach, NavSettings } from './ui/Icons';
+import { NavHome, NavTracker, NavResume, NavSettings } from './ui/Icons';
 
 const iconMap = {
   '/': NavHome,
   '/tracker': NavTracker,
   '/resume': NavResume,
-  '/outreach': NavOutreach,
   '/settings': NavSettings
 };
 

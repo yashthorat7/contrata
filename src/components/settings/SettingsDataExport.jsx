@@ -2,16 +2,15 @@ import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { storage } from '../../utils/storage';
-import { DEFAULT_JOBS } from '../../data/mockJobs';
 
 export default function SettingsDataExport() {
   const handleExport = () => {
-    const jobs = storage.get('job_hunter_jobs', DEFAULT_JOBS);
+    const jobs = storage.get('job_hunter_jobs', []);
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(jobs, null, 2));
     const ts = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14);
     const a = document.createElement('a');
     a.href = dataStr;
-    a.download = `hirefirst_${ts}.json`;
+    a.download = `hiremefirst_${ts}.json`;
     document.body.appendChild(a);
     a.click();
     a.remove();
