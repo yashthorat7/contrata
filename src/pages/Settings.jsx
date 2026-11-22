@@ -1,11 +1,14 @@
 import React from 'react';
 import { useTrackerOptions } from '../hooks/useTrackerOptions';
+import { usePreferences } from '../hooks/usePreferences';
 import SettingsOptionsCard from '../components/settings/SettingsOptionsCard';
-import SettingsLLMKeys from '../components/settings/SettingsLLMKeys';
+import SettingsPreferencesCard from '../components/settings/SettingsPreferencesCard';
 import SettingsDataExport from '../components/settings/SettingsDataExport';
 
 export default function Settings() {
-  const { statusOptions, platformOptions, setStatusOptions, setPlatformOptions } = useTrackerOptions();
+  const { statusOptions, platformOptions, priorityOptions, setStatusOptions, setPlatformOptions, setPriorityOptions } =
+    useTrackerOptions();
+  const { searchConfig, updateSearchConfig, resetSearchConfig } = usePreferences();
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10 font-sans antialiased lg:px-0">
@@ -15,6 +18,11 @@ export default function Settings() {
       </div>
 
       <div className="space-y-6">
+        <SettingsPreferencesCard
+          searchConfig={searchConfig}
+          updateSearchConfig={updateSearchConfig}
+          resetSearchConfig={resetSearchConfig}
+        />
         <SettingsOptionsCard
           title="Job Options Listing (Platforms)"
           description='Manage platform and job board options used in badges, tables, and filters. "LinkedIn" is required and cannot be removed.'
@@ -31,7 +39,14 @@ export default function Settings() {
           defaultOption="Not Started"
           placeholder="Add new status..."
         />
-        <SettingsLLMKeys />
+        <SettingsOptionsCard
+          title="Priority Listing"
+          description='Manage priority options used in badges, tables, and filters. "Medium" is required and cannot be removed.'
+          options={priorityOptions}
+          setOptions={setPriorityOptions}
+          defaultOption="Medium"
+          placeholder="Add new priority..."
+        />
         <SettingsDataExport />
       </div>
     </main>

@@ -3,9 +3,20 @@ export const storage = {
     if (typeof window === 'undefined') return defaultValue;
     try {
       const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : defaultValue;
-    } catch (e) {
-      console.error('Error reading localStorage', e);
+      if (!item) return defaultValue;
+      const parsed = JSON.parse(item);
+      if (
+        defaultValue !== null &&
+        typeof defaultValue === 'object' &&
+        !Array.isArray(defaultValue) &&
+        typeof parsed === 'object' &&
+        parsed !== null &&
+        !Array.isArray(parsed)
+      ) {
+        return { ...defaultValue, ...parsed };
+      }
+      return parsed;
+    } catch {
       return defaultValue;
     }
   },
@@ -13,16 +24,14 @@ export const storage = {
     if (typeof window === 'undefined') return;
     try {
       window.localStorage.setItem(key, JSON.stringify(value));
-    } catch (e) {
-      console.error('Error setting localStorage', e);
-    }
+      window.dispatchEvent(new CustomEvent('hf_storage_update', { detail: { key, value } }));
+    } catch {}
   },
   remove: key => {
     if (typeof window === 'undefined') return;
     try {
       window.localStorage.removeItem(key);
-    } catch (e) {
-      console.error('Error removing localStorage', e);
-    }
+      window.dispatchEvent(new CustomEvent('hf_storage_update', { detail: { key, value: null } }));
+    } catch {}
   }
 };

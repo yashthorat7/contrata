@@ -3,12 +3,11 @@ import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { BadgeDropdown } from '../ui/BadgeDropdown';
 import ReactMarkdown from 'react-markdown';
-import { priorityOptions } from '../../data/trackerConfig';
 import { CurrencyDollarIcon, ChartBarIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
 import { useTrackerOptions } from '../../hooks/useTrackerOptions';
 
 export default function JobDetailsSidebar({ job, onClose, onUpdateJob }) {
-  const { statusOptions } = useTrackerOptions();
+  const { statusOptions, priorityOptions } = useTrackerOptions();
   if (!job) return null;
 
   const handleFieldUpdate = (field, value) => {
@@ -16,7 +15,7 @@ export default function JobDetailsSidebar({ job, onClose, onUpdateJob }) {
   };
 
   return (
-    <div className="flex h-[85vh] w-full shrink-0 flex-col gap-4 overflow-y-auto border-t border-neutral-300 bg-white p-4 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] md:h-full md:w-full md:rounded-none md:border-none md:p-6 md:shadow-none">
+    <div className="flex h-[85vh] w-full shrink-0 flex-col gap-4 overflow-y-auto border-t border-neutral-300 bg-white p-4 md:h-full md:w-full md:rounded-none md:border-none md:p-6">
       <div className="flex w-full items-center gap-2">
         {job.postingLink && (
           <a href={job.postingLink} target="_blank" rel="noopener noreferrer" className="flex-1">

@@ -57,7 +57,7 @@ export function Tabs({ tabs = [], activeId, defaultTab, onChange, variant = 'seg
         }}
       />
 
-      {tabs.map((tab, index) => {
+      {tabs.map(tab => {
         const isActive = currentActive === tab.id;
         const content = (
           <div className="flex items-center justify-center gap-1.5">

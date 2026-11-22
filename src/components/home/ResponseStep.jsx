@@ -7,11 +7,11 @@ import { storage } from '../../utils/storage';
 
 export default function ResponseStep() {
   const [responseText, setResponseText] = useLocalStorage('hf_responseText', '');
-  const [status, setStatus] = useState('idle');
+  const [status, setStatus] = useState({ type: 'idle', message: '' });
 
   const handleImport = () => {
     if (!responseText.trim()) return;
-    setStatus('loading');
+    setStatus({ type: 'loading', message: '' });
 
     setTimeout(() => {
       try {
@@ -46,26 +46,30 @@ export default function ResponseStep() {
             .filter(j => !existingIds.has(j.id));
 
           storage.set('job_hunter_jobs', [...newJobs, ...existing]);
-          setStatus('success');
+          const successMsg =
+            newJobs.length > 0
+              ? `Imported ${newJobs.length} new job${newJobs.length === 1 ? '' : 's'}!`
+              : 'All jobs in list are already tracked!';
+          setStatus({ type: 'success', message: successMsg });
           setResponseText('');
         } else {
-          setStatus('error');
+          setStatus({ type: 'error', message: 'Invalid format — expected a JSON array' });
         }
       } catch {
-        setStatus('error');
+        setStatus({ type: 'error', message: 'Could not parse JSON. Check the pasted text.' });
       }
-      setTimeout(() => setStatus('idle'), 2500);
-    }, 1200);
+      setTimeout(() => setStatus({ type: 'idle', message: '' }), 3000);
+    }, 400);
   };
 
   const getButtonText = () => {
-    if (status === 'loading') return 'Importing';
-    if (status === 'success') return 'Imported successfully!';
-    if (status === 'error') return 'Got error (Invalid format)';
+    if (status.type === 'loading') return 'Importing';
+    if (status.type === 'success') return status.message;
+    if (status.type === 'error') return status.message;
     return 'Import the data';
   };
 
-  const getButtonVariant = () => (status === 'error' ? 'outline' : 'primary');
+  const getButtonVariant = () => (status.type === 'error' ? 'outline' : 'primary');
 
   return (
     <div>
@@ -74,15 +78,14 @@ export default function ResponseStep() {
         onChange={e => setResponseText(e.target.value)}
         className="min-h-[160px] text-sm leading-relaxed"
         placeholder="Paste the scraped job response data (JSON array) here..."
-        disabled={status === 'loading'}
+        disabled={status.type === 'loading'}
       />
       <div className="mt-3 flex items-center justify-start">
         <Button
           variant={getButtonVariant()}
           onClick={handleImport}
-          isLoading={status === 'loading'}
-          disabled={status === 'loading' || !responseText.trim()}
-          className="">
+          isLoading={status.type === 'loading'}
+          disabled={status.type === 'loading' || !responseText.trim()}>
           {getButtonText()}
         </Button>
       </div>

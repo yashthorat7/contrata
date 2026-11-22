@@ -1,23 +1,27 @@
 import { useRef } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 
-export function usePreferences() {
-  const [searchConfig, setSearchConfig] = useLocalStorage('hf_searchConfig', {
-    jobType: '',
-    experienceLevel: '',
-    targetWebsites: '',
-    location: '',
-    salary: '',
-    publishedAge: '',
-    listingsLimit: '',
-    customNotes: ''
-  });
+export const DEFAULT_SEARCH_CONFIG = {
+  jobType: '',
+  experienceLevel: '',
+  targetWebsites: '',
+  location: '',
+  salary: '',
+  publishedAge: '',
+  listingsLimit: '',
+  customNotes: ''
+};
 
+export function usePreferences() {
+  const [searchConfig, setSearchConfig] = useLocalStorage('hf_searchConfig', DEFAULT_SEARCH_CONFIG);
   const [links, setLinks] = useLocalStorage('hf_links', []);
 
   const updateSearchConfig = (key, value) => {
-    const limitedValue = value.length > 30 ? value.substring(0, 30) : value;
-    setSearchConfig(prev => ({ ...prev, [key]: limitedValue }));
+    setSearchConfig(prev => ({ ...prev, [key]: value }));
+  };
+
+  const resetSearchConfig = () => {
+    setSearchConfig(DEFAULT_SEARCH_CONFIG);
   };
 
   const refs = {
@@ -38,6 +42,7 @@ export function usePreferences() {
   return {
     searchConfig,
     updateSearchConfig,
+    resetSearchConfig,
     links,
     setLinks,
     refs,

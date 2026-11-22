@@ -6,9 +6,11 @@ import JobDetailsSidebar from '../components/tracker/JobDetailsSidebar';
 import useTrackerEngine from '../hooks/useTrackerEngine.js';
 import { Tabs } from '../components/ui/Tabs';
 import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
 import { Filter } from '../components/ui/Icons';
 import { Select } from '../components/ui/Select';
 import { storage } from '../utils/storage';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export default function Tracker() {
   const trackerEngine = useTrackerEngine();
@@ -20,7 +22,7 @@ export default function Tracker() {
     setViewModeState(mode);
   };
   const viewMode = viewModeState;
-  const [selectedDetailsJobId, setSelectedDetailsJobId] = useState(null);
+  const [selectedDetailsJobId, setSelectedDetailsJobId] = useLocalStorage('hf_tracker_selected_job', null);
   const [renderedJob, setRenderedJob] = useState(null);
   const [showFilter, setShowFilter] = useState(false);
   const filterBtnRef = useRef(null);
@@ -36,11 +38,13 @@ export default function Tracker() {
     { id: 'cards', label: 'Cards' }
   ];
 
+  const selectedCount = selectedJobIds.length;
+  const itemLabel = selectedCount === 1 ? '1 Item' : `${selectedCount} Items`;
   const actionOptions = [
-    { label: `Save ${selectedJobIds.length} Items`, value: 'save', confirm: true },
-    { label: `Archive ${selectedJobIds.length} Items`, value: 'archive', confirm: true },
-    { label: `Unmark ${selectedJobIds.length} Items`, value: 'unmark', confirm: true },
-    { label: `Delete ${selectedJobIds.length} Items`, value: 'delete', confirm: true }
+    { label: `Save ${itemLabel}`, value: 'save', confirm: true },
+    { label: `Archive ${itemLabel}`, value: 'archive', confirm: true },
+    { label: `Unmark ${itemLabel}`, value: 'unmark', confirm: true },
+    { label: `Delete ${itemLabel}`, value: 'delete', confirm: true }
   ];
 
   const handleBulkAction = action => {
@@ -83,6 +87,13 @@ export default function Tracker() {
             <div className="flex items-center rounded-md border border-neutral-300 bg-transparent px-3 py-1 text-sm font-medium text-neutral-500">
               {trackerEngine.filteredJobs.length}
             </div>
+
+            <Input
+              value={trackerEngine.searchQuery}
+              onChange={e => trackerEngine.setSearchQuery(e.target.value)}
+              placeholder="Search company or role..."
+              className="w-48 !h-8 text-xs"
+            />
 
             {selectedJobIds.length > 0 && (
               <Select

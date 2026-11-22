@@ -10,7 +10,7 @@ export default function SettingsDataExport() {
     const ts = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14);
     const a = document.createElement('a');
     a.href = dataStr;
-    a.download = `hiremefirst_${ts}.json`;
+    a.download = `contrata_${ts}.json`;
     document.body.appendChild(a);
     a.click();
     a.remove();

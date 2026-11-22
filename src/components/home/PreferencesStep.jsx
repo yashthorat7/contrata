@@ -7,9 +7,14 @@ import { generateSearchPrompt, generateLinksPrompt } from '../../utils/prompts';
 import { storage } from '../../utils/storage';
 
 export default function PreferencesStep({ activeTab }) {
-  const { searchConfig, updateSearchConfig, links, setLinks, refs } = usePreferences();
+  const { searchConfig, updateSearchConfig, resetSearchConfig, links, setLinks, refs } = usePreferences();
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState('');
+
+  React.useEffect(() => {
+    setCopied(false);
+    setError('');
+  }, [activeTab]);
 
   const handleCopyPrompt = () => {
     const contextText = storage.get('hf_contextText', '');
@@ -46,8 +51,7 @@ export default function PreferencesStep({ activeTab }) {
   };
 
   const handleResetSearch = () => {
-    storage.remove('hf_searchConfig');
-    window.location.reload(); // reset state
+    resetSearchConfig();
   };
 
   return (
@@ -100,10 +104,18 @@ export default function PreferencesStep({ activeTab }) {
               inputRef={refs.age}
               value={searchConfig.publishedAge}
               onChange={val => updateSearchConfig('publishedAge', val)}
-              nextRef={refs.notes}
+              nextRef={refs.limit}
               placeholder="time window"
             />
-            . Additionally, the role should focus on{' '}
+            , and limit results to{' '}
+            <EditableSpan
+              inputRef={refs.limit}
+              value={searchConfig.listingsLimit}
+              onChange={val => updateSearchConfig('listingsLimit', val)}
+              nextRef={refs.notes}
+              placeholder="e.g. 25"
+            />{' '}
+            items. Additionally, the role should focus on{' '}
             <EditableSpan
               inputRef={refs.notes}
               value={searchConfig.customNotes}

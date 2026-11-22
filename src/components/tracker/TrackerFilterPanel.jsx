@@ -1,6 +1,5 @@
 import React, { useRef, useMemo } from 'react';
 import { SalaryRangeFilter } from './SalaryRangeFilter';
-import { priorityOptions } from '../../data/trackerConfig';
 import { useOutsideClick } from '../../hooks/useOutsideClick';
 import { Checkbox } from '../ui/Checkbox';
 import { useTrackerOptions } from '../../hooks/useTrackerOptions';
@@ -18,7 +17,7 @@ const SORT_OPTIONS = [
 const LOCATION_TYPES = ['Remote', 'Hybrid', 'Onsite'];
 
 function SectionLabel({ children }) {
-  return <p className="mb-1.5 text-[11px] font-semibold tracking-wide text-neutral-400 uppercase">{children}</p>;
+  return <p className="mb-2 text-xs font-medium text-neutral-500">{children}</p>;
 }
 
 function PillGroup({ options, selected, onChange, multi = false }) {
@@ -50,7 +49,7 @@ function PillGroup({ options, selected, onChange, multi = false }) {
 }
 
 export default function TrackerFilterPanel({ triggerRef, onClose, filters, onFiltersChange }) {
-  const { statusOptions, platformOptions } = useTrackerOptions();
+  const { statusOptions, platformOptions, priorityOptions } = useTrackerOptions();
   const panelRef = useRef(null);
   const refsToWatch = useMemo(() => [panelRef, triggerRef], [triggerRef]);
   useOutsideClick(refsToWatch, onClose, true, 'mousedown');
@@ -72,6 +71,19 @@ export default function TrackerFilterPanel({ triggerRef, onClose, filters, onFil
     set('jobState', nextStates);
   };
 
+  const handleClearAll = () => {
+    onFiltersChange({
+      sort: '',
+      status: [],
+      priority: [],
+      platform: [],
+      locationType: [],
+      salaryMin: 0,
+      salaryMax: 0,
+      jobState: ['unmarked', 'saved']
+    });
+  };
+
   const activeCount = [
     filters.sort !== '',
     filters.status.length > 0,
@@ -83,33 +95,32 @@ export default function TrackerFilterPanel({ triggerRef, onClose, filters, onFil
   ].filter(Boolean).length;
 
   return (
-    <div ref={panelRef} className="absolute top-full left-0 z-50 mt-1.5 w-[300px] rounded-md border border-neutral-300 bg-white p-4">
-      <div className="mb-4 flex items-center justify-between">
-        <span className="text-sm font-semibold text-neutral-800">Filter &amp; Sort</span>
-        {activeCount > 0 && (
+    <div
+      ref={panelRef}
+      className="absolute top-full left-0 z-50 mt-1.5 flex h-[80vh] max-h-[80vh] w-[320px] flex-col rounded-md border border-neutral-300 bg-white select-none">
+      <div className="flex shrink-0 items-center justify-between border-b border-neutral-200 px-4 py-3">
+        <span className="text-sm font-medium text-neutral-900">Filter &amp; Sort</span>
+        <div className="flex items-center gap-3">
+          {activeCount > 0 && (
+            <button
+              type="button"
+              onClick={handleClearAll}
+              className="text-xs text-neutral-500 transition-colors hover:text-neutral-900">
+              Clear all
+            </button>
+          )}
           <button
             type="button"
-            onClick={() =>
-              onFiltersChange({
-                sort: '',
-                status: [],
-                priority: [],
-                platform: [],
-                locationType: [],
-                salaryMin: 0,
-                salaryMax: 0,
-                jobState: ['unmarked', 'saved']
-              })
-            }
-            className="text-xs text-neutral-400 hover:text-neutral-700">
-            Clear all
+            onClick={onClose}
+            className="text-xs text-neutral-400 transition-colors hover:text-neutral-700">
+            ✕
           </button>
-        )}
+        </div>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex-1 space-y-4 overflow-y-auto p-4">
         <div>
-          <SectionLabel>sort</SectionLabel>
+          <SectionLabel>Sort</SectionLabel>
           <div className="flex flex-col gap-0.5">
             {SORT_OPTIONS.map(opt => (
               <button
@@ -131,7 +142,7 @@ export default function TrackerFilterPanel({ triggerRef, onClose, filters, onFil
         <hr className="border-neutral-200" />
 
         <div>
-          <SectionLabel>state</SectionLabel>
+          <SectionLabel>Application State</SectionLabel>
           <div className="flex flex-col gap-2">
             <Checkbox
               id="filter-state-unmarked"
@@ -140,39 +151,52 @@ export default function TrackerFilterPanel({ triggerRef, onClose, filters, onFil
               label="Unmarked"
             />
             <Checkbox
+              id="filter-state-saved"
+              checked={savedChecked}
+              onChange={() => handleToggleState('saved')}
+              label="Saved"
+            />
+            <Checkbox
               id="filter-state-archived"
               checked={archivedChecked}
               onChange={() => handleToggleState('archived')}
               label="Archived"
             />
-            <Checkbox id="filter-state-saved" checked={savedChecked} onChange={() => handleToggleState('saved')} label="Saved" />
           </div>
         </div>
 
         <hr className="border-neutral-200" />
 
         <div>
-          <SectionLabel>status</SectionLabel>
+          <SectionLabel>Status</SectionLabel>
           <PillGroup options={statusOptions} selected={filters.status} onChange={v => set('status', v)} multi />
         </div>
 
+        <hr className="border-neutral-200" />
+
         <div>
-          <SectionLabel>priority</SectionLabel>
+          <SectionLabel>Priority</SectionLabel>
           <PillGroup options={priorityOptions} selected={filters.priority} onChange={v => set('priority', v)} multi />
         </div>
 
+        <hr className="border-neutral-200" />
+
         <div>
-          <SectionLabel>platform</SectionLabel>
+          <SectionLabel>Platform</SectionLabel>
           <PillGroup options={platformOptions} selected={filters.platform} onChange={v => set('platform', v)} multi />
         </div>
 
+        <hr className="border-neutral-200" />
+
         <div>
-          <SectionLabel>work type</SectionLabel>
+          <SectionLabel>Work Type</SectionLabel>
           <PillGroup options={LOCATION_TYPES} selected={filters.locationType} onChange={v => set('locationType', v)} multi />
         </div>
 
+        <hr className="border-neutral-200" />
+
         <div>
-          <SectionLabel>salary</SectionLabel>
+          <SectionLabel>Salary Range</SectionLabel>
           <SalaryRangeFilter
             min={filters.salaryMin}
             max={filters.salaryMax}

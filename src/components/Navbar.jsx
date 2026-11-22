@@ -1,12 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Tabs } from './ui/Tabs';
 import navTabs from '../data/navigation.json';
-import { NavHome, NavTracker, NavResume, NavSettings } from './ui/Icons';
+import { NavHome, NavTracker, NavSettings } from './ui/Icons';
 
 const iconMap = {
   '/': NavHome,
   '/tracker': NavTracker,
-  '/resume': NavResume,
   '/settings': NavSettings
 };
 
@@ -23,7 +22,7 @@ export function Navbar() {
       <div className="mx-auto flex h-16 w-full max-w-4xl items-center justify-between">
         <div className="flex w-auto justify-start">
           <Link to="/" className="font-serif text-xl font-bold text-neutral-900">
-            HF.
+            Contrata
           </Link>
         </div>
 

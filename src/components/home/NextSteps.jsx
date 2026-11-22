@@ -22,14 +22,14 @@ export default function NextSteps() {
 
       <Card className="flex flex-col">
         <CardHeader className="pb-2 text-center">
-          <CardTitle className="text-lg">Tailor Resume</CardTitle>
+          <CardTitle className="text-lg">Change Settings</CardTitle>
           <CardDescription className="leading-relaxed">
-            Use AI or edit manually to tailor your resume specifically for this job.
+            Manage platforms, application statuses, and export your application data.
           </CardDescription>
         </CardHeader>
         <CardFooter className="mt-auto pt-4">
-          <Button variant="outline" className="w-full" onClick={() => navigate('/resume')}>
-            Tailor Resume
+          <Button variant="outline" className="w-full" onClick={() => navigate('/settings')}>
+            Open Settings
           </Button>
         </CardFooter>
       </Card>

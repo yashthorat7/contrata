@@ -1,17 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { formatRelativeTime } from '../../utils/formatters';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { ContextMenu } from '../ui/ContextMenu';
 import { BookmarkIcon, ArchiveBoxIcon } from '@heroicons/react/16/solid';
-import { storage } from '../../utils/storage';
 
 const TAG_SCROLL_PX_PER_SEC = 30;
 
 export default function TrackerCards({ updateJob, filteredJobs, selectedDetailsJobId, setSelectedDetailsJobId }) {
   const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, jobId: null });
-  const navigate = useNavigate();
 
   const handleContextMenu = (e, job) => {
     e.preventDefault();
@@ -29,20 +26,6 @@ export default function TrackerCards({ updateJob, filteredJobs, selectedDetailsJ
       updateJob(jobId, { saved: false, archived: false });
     } else if (action === 'View Details') {
       setSelectedDetailsJobId?.(jobId);
-    } else if (action === 'Make Resume') {
-      const job = filteredJobs.find(j => j.id === jobId);
-      if (!job) return;
-      const jd = [
-        job.role && `Role: ${job.role}`,
-        job.company && `Company: ${job.company}`,
-        job.location && `Location: ${job.location}${job.locationType ? ` (${job.locationType})` : ''}`,
-        job.salary && `Salary: ${job.salary}`,
-        job.description && `\n${job.description}`
-      ]
-        .filter(Boolean)
-        .join('\n');
-      storage.set('hf_resume_jd', jd);
-      navigate('/resume');
     }
   };
 
@@ -52,7 +35,6 @@ export default function TrackerCards({ updateJob, filteredJobs, selectedDetailsJ
 
     return [
       { label: 'View Details', onClick: () => handleContextMenuAction('View Details', contextMenu.jobId) },
-      { label: 'Make Resume', onClick: () => handleContextMenuAction('Make Resume', contextMenu.jobId) },
       ...(targetJob.saved
         ? [
             { label: 'Unmark', onClick: () => handleContextMenuAction('unmark', contextMenu.jobId) },

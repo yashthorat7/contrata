@@ -31,6 +31,12 @@ export function SmartLinkStore({ links = [], onChange }) {
     }
   };
 
+  const handleBlur = () => {
+    if (inputValue.trim() && parseAndAddLinks(inputValue)) {
+      setInputValue('');
+    }
+  };
+
   const removeLink = linkToRemove => {
     if (onChange) {
       onChange(links.filter(l => l !== linkToRemove));
@@ -45,6 +51,7 @@ export function SmartLinkStore({ links = [], onChange }) {
         onChange={e => setInputValue(e.target.value)}
         onPaste={handlePaste}
         onKeyDown={handleKeyDown}
+        onBlur={handleBlur}
         placeholder={links.length === 0 ? 'Paste job links here (e.g., LinkedIn, Indeed)...' : ''}
         className="w-full flex-shrink-0 border-none bg-transparent px-2.5 pt-1.5 text-sm text-neutral-700 outline-none placeholder:text-neutral-300"
       />

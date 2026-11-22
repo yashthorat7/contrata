@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { storage } from '../utils/storage';
+import { useLocalStorage } from './useLocalStorage';
 
 export function useTrackerTable({
   filteredJobs,
@@ -12,8 +11,7 @@ export function useTrackerTable({
   setSelectedDetailsJobId
 }) {
   const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, jobId: null });
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-  const navigate = useNavigate();
+  const [sortConfig, setSortConfig] = useLocalStorage('hf_tracker_sort_config', { key: null, direction: 'asc' });
 
   const sortedJobs = useMemo(() => {
     if (!sortConfig.key) return filteredJobs;
@@ -73,20 +71,6 @@ export function useTrackerTable({
       setSelectedJobIds([]);
     } else if (action === 'View Details') {
       setSelectedDetailsJobId?.(jobId);
-    } else if (action === 'Make Resume') {
-      const job = filteredJobs.find(j => j.id === jobId);
-      if (!job) return;
-      const jd = [
-        job.role && `Role: ${job.role}`,
-        job.company && `Company: ${job.company}`,
-        job.location && `Location: ${job.location}${job.locationType ? ` (${job.locationType})` : ''}`,
-        job.salary && `Salary: ${job.salary}`,
-        job.description && `\n${job.description}`
-      ]
-        .filter(Boolean)
-        .join('\n');
-      storage.set('hf_resume_jd', jd);
-      navigate('/resume');
     }
   };
 
@@ -97,16 +81,17 @@ export function useTrackerTable({
     const isBulk = selectedJobIds.length > 0 && selectedJobIds.includes(contextMenu.jobId);
 
     if (isBulk) {
+      const count = selectedJobIds.length;
+      const itemLabel = count === 1 ? '1 Item' : `${count} Items`;
       return [
-        { label: `Save ${selectedJobIds.length} Items`, onClick: () => handleContextMenuAction('save', contextMenu.jobId) },
-        { label: `Archive ${selectedJobIds.length} Items`, onClick: () => handleContextMenuAction('archive', contextMenu.jobId) },
-        { label: `Unmark ${selectedJobIds.length} Items`, onClick: () => handleContextMenuAction('unmark', contextMenu.jobId) }
+        { label: `Save ${itemLabel}`, onClick: () => handleContextMenuAction('save', contextMenu.jobId) },
+        { label: `Archive ${itemLabel}`, onClick: () => handleContextMenuAction('archive', contextMenu.jobId) },
+        { label: `Unmark ${itemLabel}`, onClick: () => handleContextMenuAction('unmark', contextMenu.jobId) }
       ];
     }
 
     return [
       { label: 'View Details', onClick: () => handleContextMenuAction('View Details', contextMenu.jobId) },
-      { label: 'Make Resume', onClick: () => handleContextMenuAction('Make Resume', contextMenu.jobId) },
       ...(targetJob.saved
         ? [
             { label: 'Unmark', onClick: () => handleContextMenuAction('unmark', contextMenu.jobId) },
